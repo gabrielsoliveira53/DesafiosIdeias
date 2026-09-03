@@ -1,0 +1,3398 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f172a">
+<title>MAQCORE Hub | Gestão Integrada</title>
+
+<style>
+:root{
+  --bg:#f4f7fb;
+  --surface:#fff;
+  --surface-2:#f8fafc;
+  --text:#172033;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --navy:#0f172a;
+  --blue:#2563eb;
+  --green:#16a34a;
+  --green-soft:#dcfce7;
+  --yellow:#d97706;
+  --yellow-soft:#fef3c7;
+  --red:#dc2626;
+  --red-soft:#fee2e2;
+  --purple:#7c3aed;
+  --orange:#ea580c;
+  --cyan:#0891b2;
+  --pink:#db2777;
+  --shadow:0 10px 30px rgba(15,23,42,.08);
+  --radius:18px;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+
+.app{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:250px 1fr;
+}
+
+.sidebar{
+  background:var(--navy);
+  color:#fff;
+  padding:26px 18px;
+  display:flex;
+  flex-direction:column;
+  gap:28px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  z-index:80;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-weight:800;
+  font-size:19px;
+  letter-spacing:.3px;
+}
+
+.brand-mark{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:linear-gradient(135deg,#2563eb,#60a5fa);
+  font-size:22px;
+}
+
+.nav{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.nav button{
+  width:100%;
+  border:0;
+  color:#cbd5e1;
+  background:transparent;
+  padding:12px 14px;
+  border-radius:12px;
+  text-align:left;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  transition:.2s;
+}
+
+.nav button:hover,.nav button.active{
+  background:#1e293b;
+  color:#fff;
+}
+
+.sidebar-note{
+  margin-top:auto;
+  background:#1e293b;
+  border:1px solid #334155;
+  padding:14px;
+  border-radius:14px;
+  color:#cbd5e1;
+  font-size:13px;
+  line-height:1.45;
+}
+
+.main{min-width:0}
+
+.topbar{
+  height:78px;
+  background:rgba(255,255,255,.96);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 28px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  backdrop-filter:blur(8px);
+}
+
+.top-title h1{margin:0;font-size:22px}
+.top-title p{margin:3px 0 0;font-size:13px;color:var(--muted)}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.icon-btn{
+  position:relative;
+  width:44px;
+  height:44px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:#fff;
+  display:grid;
+  place-items:center;
+  font-size:20px;
+}
+
+.badge{
+  position:absolute;
+  right:-5px;
+  top:-6px;
+  background:var(--red);
+  color:#fff;
+  min-width:20px;
+  height:20px;
+  padding:0 5px;
+  display:grid;
+  place-items:center;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:800;
+  border:2px solid #fff;
+}
+
+.operator{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding-left:8px;
+}
+
+.avatar{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#dbeafe;
+  color:#1d4ed8;
+  font-weight:800;
+}
+
+.content{
+  padding:24px 28px 34px;
+  display:grid;
+  gap:22px;
+}
+
+.home{
+  min-height:calc(100vh - 125px);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.home-header{text-align:center;margin-bottom:35px}
+.home-header .hub-icon{
+  width:70px;
+  height:70px;
+  margin:0 auto 15px;
+  border-radius:20px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#0f172a,#2563eb);
+  color:#fff;
+  font-size:32px;
+  box-shadow:0 15px 35px rgba(37,99,235,.2);
+}
+.home-header h1{font-size:32px;margin:0 0 8px}
+.home-header p{color:var(--muted);margin:0}
+
+.sector-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  max-width:1050px;
+  width:100%;
+  margin:auto;
+}
+
+.sector-card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:24px;
+  min-height:190px;
+  box-shadow:var(--shadow);
+  transition:.25s;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+}
+
+.sector-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 18px 40px rgba(15,23,42,.13);
+}
+
+.sector-card::after{
+  content:"";
+  position:absolute;
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  right:-35px;
+  bottom:-35px;
+  background:var(--sector);
+  opacity:.08;
+}
+
+.sector-icon{
+  width:52px;
+  height:52px;
+  border-radius:15px;
+  display:grid;
+  place-items:center;
+  background:var(--sector-soft);
+  color:var(--sector);
+  font-size:25px;
+  margin-bottom:17px;
+}
+
+.sector-card h2{margin:0 0 6px;font-size:18px}
+.sector-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+.sector-enter{
+  margin-top:16px;
+  color:var(--sector);
+  font-weight:800;
+  font-size:12px;
+}
+
+.dashboard{
+  display:none;
+}
+
+.dashboard.show{display:grid;gap:22px}
+
+.sector-banner{
+  background:#fff;
+  border:1px solid var(--border);
+  border-left:7px solid var(--sector);
+  border-radius:18px;
+  padding:20px 22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  box-shadow:var(--shadow);
+}
+
+.sector-banner-left{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.banner-icon{
+  width:48px;
+  height:48px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  background:var(--sector-soft);
+  color:var(--sector);
+  font-size:23px;
+}
+
+.sector-banner h2{margin:0;font-size:21px}
+.sector-banner p{margin:4px 0 0;color:var(--muted);font-size:13px}
+
+.back-btn{
+  border:1px solid var(--border);
+  background:#fff;
+  padding:10px 14px;
+  border-radius:12px;
+  font-weight:700;
+}
+
+.overview{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+
+.stat{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:18px;
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+}
+
+.stat::after{
+  content:"";
+  position:absolute;
+  width:7px;
+  height:45px;
+  right:0;
+  top:18px;
+  background:var(--accent,var(--blue));
+  border-radius:5px 0 0 5px;
+}
+
+.stat-label{color:var(--muted);font-size:13px}
+.stat-value{font-size:30px;font-weight:800;margin:5px 0 2px}
+.stat-sub{font-size:12px;color:var(--muted)}
+
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1.65fr) minmax(300px,.8fr);
+  gap:22px;
+  align-items:start;
+}
+
+.card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+
+.card-head{
+  padding:19px 20px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  gap:14px;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+.card-head h2{font-size:17px;margin:0}
+.card-head p{font-size:12px;color:var(--muted);margin:3px 0 0}
+
+.side-stack{display:grid;gap:18px}
+
+.data-list{
+  padding:14px 16px 17px;
+  display:grid;
+  gap:10px;
+}
+
+.data-row{
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  transition:.2s;
+}
+
+.data-row:hover{background:var(--surface-2)}
+
+.data-title{font-weight:800;font-size:14px}
+.data-sub{font-size:12px;color:var(--muted);margin-top:4px}
+
+.pill{
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.pill.green{background:var(--green-soft);color:#166534}
+.pill.yellow{background:var(--yellow-soft);color:#92400e}
+.pill.red{background:var(--red-soft);color:#991b1b}
+.pill.blue{background:#dbeafe;color:#1d4ed8}
+.pill.purple{background:#ede9fe;color:#6d28d9}
+
+.progress{
+  height:8px;
+  background:#e5e7eb;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:9px;
+}
+
+.progress div{
+  height:100%;
+  width:0;
+  border-radius:20px;
+  background:var(--sector,var(--blue));
+  transition:.5s;
+}
+
+.metric-big{
+  padding:20px;
+  text-align:center;
+}
+
+.metric-big strong{
+  display:block;
+  font-size:38px;
+}
+
+.metric-big span{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.analysis{
+  padding:17px;
+  background:linear-gradient(135deg,#eff6ff,#fff);
+  border:1px solid #bfdbfe;
+  border-radius:14px;
+  margin:16px;
+  line-height:1.55;
+  font-size:13px;
+}
+
+.analysis strong{color:#1d4ed8}
+
+.message-list{
+  padding:14px 16px 16px;
+  display:grid;
+  gap:10px;
+}
+
+.message{
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px;
+  background:var(--surface-2);
+}
+
+.message-top{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:7px;
+  font-size:12px;
+}
+
+.message-top strong{font-size:13px}
+.message-top time{color:var(--muted)}
+.message p{margin:0;line-height:1.5;font-size:13px}
+
+.message-actions{
+  display:flex;
+  gap:7px;
+  margin-top:10px;
+}
+
+.small-btn{
+  border:1px solid var(--border);
+  background:#fff;
+  border-radius:9px;
+  padding:6px 9px;
+  font-size:11px;
+  font-weight:700;
+}
+
+.primary{
+  border:0;
+  background:var(--sector,var(--blue));
+  color:#fff;
+  border-radius:11px;
+  padding:10px 14px;
+  font-weight:800;
+}
+
+.secondary{
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--text);
+  border-radius:11px;
+  padding:10px 14px;
+  font-weight:700;
+}
+
+.consult-box{
+  padding:20px;
+}
+
+.search-machine{
+  display:flex;
+  gap:10px;
+}
+
+.search-machine input{
+  flex:1;
+  min-width:0;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:12px 14px;
+  outline:none;
+}
+
+.chat{
+  padding:0 20px 20px;
+  display:grid;
+  gap:10px;
+  max-height:500px;
+  overflow:auto;
+}
+
+.bubble{
+  max-width:90%;
+  padding:12px 14px;
+  border-radius:15px;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.bubble.bot{
+  background:#f1f5f9;
+  border:1px solid var(--border);
+  justify-self:start;
+}
+
+.bubble.user{
+  background:#dbeafe;
+  color:#1e3a8a;
+  justify-self:end;
+}
+
+.machine-result{
+  display:grid;
+  gap:12px;
+  margin-top:18px;
+}
+
+.machine-result-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.result-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.result-item{
+  border:1px solid var(--border);
+  background:#f8fafc;
+  padding:12px;
+  border-radius:12px;
+}
+
+.result-item small{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-bottom:4px;
+}
+
+.result-item strong{font-size:14px}
+
+.machine-history{
+  border-left:3px solid #cbd5e1;
+  padding-left:12px;
+  margin-top:5px;
+}
+
+.machine-history strong{font-size:12px}
+.machine-history p{font-size:11px;color:var(--muted);margin:3px 0 10px}
+
+.action-status{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+
+.status-action{
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:7px 10px;
+  background:#fff;
+  font-size:11px;
+  font-weight:800;
+}
+
+.status-action.green:hover{background:var(--green-soft)}
+.status-action.yellow:hover{background:var(--yellow-soft)}
+.status-action.red:hover{background:var(--red-soft)}
+
+.table-wrap{overflow:auto}
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+th,td{
+  padding:13px 15px;
+  border-bottom:1px solid var(--border);
+  text-align:left;
+}
+th{font-size:11px;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+
+.ticket{
+  padding:14px 0;
+  border-bottom:1px solid var(--border);
+}
+.ticket:last-child{border-bottom:0}
+.ticket-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+.ticket-id{font-size:12px;color:var(--muted)}
+.ticket-title{font-weight:700;font-size:14px;margin:4px 0}
+.ticket-meta{font-size:12px;color:var(--muted)}
+
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,.5);
+  z-index:100;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.modal-backdrop.show{display:flex}
+
+.modal{
+  width:min(520px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:#fff;
+  border-radius:20px;
+  box-shadow:0 25px 70px rgba(15,23,42,.25);
+}
+
+.modal-head{
+  padding:19px 20px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.modal-head h3{margin:0}
+.modal-body{padding:20px}
+
+.form-group{
+  display:grid;
+  gap:6px;
+  margin-bottom:14px;
+}
+
+.form-group label{
+  font-size:12px;
+  font-weight:800;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:11px;
+  padding:10px 12px;
+  outline:none;
+  background:#fff;
+}
+
+.form-group textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+.modal-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:18px;
+}
+
+.toast{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  z-index:200;
+  background:#0f172a;
+  color:#fff;
+  padding:13px 16px;
+  border-radius:12px;
+  box-shadow:0 15px 35px rgba(15,23,42,.2);
+  transform:translateY(100px);
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+  font-size:13px;
+}
+
+.toast.show{
+  transform:translateY(0);
+  opacity:1;
+}
+
+.home-only{display:block}
+
+.mobile-menu{display:none}
+
+@media(max-width:1100px){
+  .overview{grid-template-columns:repeat(2,1fr)}
+  .layout{grid-template-columns:1fr}
+  .sector-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:780px){
+  .app{grid-template-columns:1fr}
+
+  .sidebar{
+    display:none;
+    position:fixed;
+    left:0;
+    width:250px;
+  }
+
+  .sidebar.show{display:flex}
+  .mobile-menu{display:grid}
+
+  .topbar{padding:0 16px;height:70px}
+  .content{padding:16px}
+  .operator .operator-text{display:none}
+  .overview{grid-template-columns:1fr 1fr}
+  .sector-grid{grid-template-columns:1fr}
+  .sector-banner{align-items:flex-start;flex-direction:column}
+}
+
+@media(max-width:520px){
+  .overview{grid-template-columns:1fr}
+  .top-title p{display:none}
+  .top-title h1{font-size:17px}
+  .result-grid{grid-template-columns:1fr}
+  .search-machine{flex-direction:column}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- ================= SIDEBAR ================= -->
+<aside class="sidebar" id="sidebar">
+
+  <div class="brand">
+    <div class="brand-mark">⚙</div>
+    <div>
+      MAQCORE<br>
+      <span style="font-size:11px;font-weight:600;color:#94a3b8">
+        HUB CENTRAL
+      </span>
+    </div>
+  </div>
+
+  <nav class="nav">
+
+    <button class="active" id="navHome" onclick="goHome()">
+      ▦ Início
+    </button>
+
+    <button onclick="openSector('maintenance')">
+      🔧 Manutenção
+    </button>
+
+    <button onclick="openSector('production')">
+      🏭 Produção
+    </button>
+
+    <button onclick="openSector('quality')">
+      ✓ Qualidade
+    </button>
+
+    <button onclick="openSector('logistics')">
+      🚚 Logística
+    </button>
+
+    <button onclick="openSector('engineering')">
+      📐 Engenharia
+    </button>
+
+    <button onclick="openSector('it')">
+      💻 TI
+    </button>
+
+  </nav>
+
+  <div class="sidebar-note">
+    <strong style="display:block;color:#fff;margin-bottom:6px">
+      Sistema Integrado
+    </strong>
+    Monitoramento centralizado dos seis setores da empresa.
+    <br><br>
+    <span id="sideClock">--:--:--</span>
+  </div>
+
+</aside>
+
+<!-- ================= MAIN ================= -->
+<main class="main">
+
+<header class="topbar">
+
+  <div style="display:flex;align-items:center;gap:10px">
+
+    <button class="icon-btn mobile-menu" onclick="toggleMenu()">☰</button>
+
+    <div class="top-title">
+      <h1 id="topTitle">MAQCORE Hub Central</h1>
+      <p id="topSubtitle">
+        Gestão integrada · Monitoramento em tempo real
+      </p>
+    </div>
+
+  </div>
+
+  <div class="top-actions">
+
+    <button class="icon-btn" onclick="openMessages()">
+      ✉
+      <span class="badge" id="messageBadge">3</span>
+    </button>
+
+    <div class="operator">
+      <div class="avatar">OP</div>
+
+      <div class="operator-text">
+        <div style="font-size:13px;font-weight:800">
+          Operador MAQCORE
+        </div>
+        <div style="font-size:11px;color:#6b7280">
+          Sistema integrado
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</header>
+
+<div class="content">
+
+<!-- ================= HOME ================= -->
+<section class="home" id="home">
+
+  <div class="home-header">
+
+    <div class="hub-icon">⚙</div>
+
+    <h1>Hub Central MAQCORE</h1>
+
+    <p>
+      Selecione um setor para acessar seu painel de gestão
+    </p>
+
+  </div>
+
+  <div class="sector-grid">
+
+    <div class="sector-card"
+         style="--sector:#2563eb;--sector-soft:#dbeafe"
+         onclick="openSector('maintenance')">
+
+      <div class="sector-icon">🔧</div>
+
+      <h2>Manutenção</h2>
+
+      <p>
+        Monitoramento de máquinas, chamados,
+        ocorrências, QR Code e histórico de manutenção.
+      </p>
+
+      <div class="sector-enter">
+        Acessar manutenção →
+      </div>
+
+    </div>
+
+
+    <div class="sector-card"
+         style="--sector:#16a34a;--sector-soft:#dcfce7"
+         onclick="openSector('production')">
+
+      <div class="sector-icon">🏭</div>
+
+      <h2>Produção</h2>
+
+      <p>
+        Acompanhe produção, metas, máquinas,
+        peças aprovadas, defeitos e situação operacional.
+      </p>
+
+      <div class="sector-enter">
+        Acessar produção →
+      </div>
+
+    </div>
+
+
+    <div class="sector-card"
+         style="--sector:#7c3aed;--sector-soft:#ede9fe"
+         onclick="openSector('quality')">
+
+      <div class="sector-icon">✓</div>
+
+      <h2>Qualidade</h2>
+
+      <p>
+        Controle de inspeções, conformidade,
+        não conformidades e índices de qualidade.
+      </p>
+
+      <div class="sector-enter">
+        Acessar qualidade →
+      </div>
+
+    </div>
+
+
+    <div class="sector-card"
+         style="--sector:#ea580c;--sector-soft:#ffedd5"
+         onclick="openSector('logistics')">
+
+      <div class="sector-icon">🚚</div>
+
+      <h2>Logística</h2>
+
+      <p>
+        Controle de estoque, pedidos,
+        recebimentos, expedições e entregas.
+      </p>
+
+      <div class="sector-enter">
+        Acessar logística →
+      </div>
+
+    </div>
+
+
+    <div class="sector-card"
+         style="--sector:#0891b2;--sector-soft:#cffafe"
+         onclick="openSector('engineering')">
+
+      <div class="sector-icon">📐</div>
+
+      <h2>Engenharia</h2>
+
+      <p>
+        Acompanhe projetos, desenvolvimento,
+        documentação técnica e cronogramas.
+      </p>
+
+      <div class="sector-enter">
+        Acessar engenharia →
+      </div>
+
+    </div>
+
+
+    <div class="sector-card"
+         style="--sector:#db2777;--sector-soft:#fce7f3"
+         onclick="openSector('it')">
+
+      <div class="sector-icon">💻</div>
+
+      <h2>TI</h2>
+
+      <p>
+        Monitore chamados, servidores,
+        equipamentos, rede e disponibilidade dos sistemas.
+      </p>
+
+      <div class="sector-enter">
+        Acessar TI →
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     MANUTENÇÃO
+     BASEADA NO PRIMEIRO SISTEMA ENVIADO
+====================================================== -->
+
+<section class="dashboard" id="maintenance">
+
+  <div class="sector-banner"
+       style="--sector:#2563eb;--sector-soft:#dbeafe">
+
+    <div class="sector-banner-left">
+
+      <div class="banner-icon">🔧</div>
+
+      <div>
+        <h2>Monitoramento de Máquinas</h2>
+        <p>
+          Visão operacional em tempo real · Prioridades automáticas
+        </p>
+      </div>
+
+    </div>
+
+    <button class="back-btn" onclick="goHome()">
+      ← Voltar aos setores
+    </button>
+
+  </div>
+
+
+  <section class="overview">
+
+    <article class="stat" style="--accent:#2563eb">
+      <div class="stat-label">Máquinas monitoradas</div>
+      <div class="stat-value" id="mTotal">0</div>
+      <div class="stat-sub">Setor produtivo</div>
+    </article>
+
+    <article class="stat" style="--accent:#dc2626">
+      <div class="stat-label">Paradas críticas</div>
+      <div class="stat-value" id="mRed">0</div>
+      <div class="stat-sub">Prioridade máxima</div>
+    </article>
+
+    <article class="stat" style="--accent:#d97706">
+      <div class="stat-label">Em atenção</div>
+      <div class="stat-value" id="mYellow">0</div>
+      <div class="stat-sub">Preventiva / inspeção</div>
+    </article>
+
+    <article class="stat" style="--accent:#16a34a">
+      <div class="stat-label">Operando normalmente</div>
+      <div class="stat-value" id="mGreen">0</div>
+      <div class="stat-sub">Sem ocorrência crítica</div>
+    </article>
+
+  </section>
+
+
+  <div class="layout">
+
+    <section class="card">
+
+      <div class="card-head">
+
+        <div>
+          <h2>Prioridade das máquinas</h2>
+          <p>
+            Ranking automático: parada → atenção → normal
+          </p>
+        </div>
+
+        <div style="display:flex;gap:12px;font-size:12px;color:#6b7280">
+          <span>🔴 Parada</span>
+          <span>🟡 Atenção</span>
+          <span>🟢 Normal</span>
+        </div>
+
+      </div>
+
+      <div class="data-list" id="maintenanceMachines"></div>
+
+    </section>
+
+
+    <aside class="side-stack">
+
+      <section class="card">
+
+        <div class="card-head">
+          <div>
+            <h2>Acesso rápido</h2>
+            <p>Ações frequentes no piso de fábrica</p>
+          </div>
+        </div>
+
+        <div style="padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+          <button class="secondary"
+                  style="min-height:90px"
+                  onclick="openQR()">
+            ▣<br><br>
+            <strong>Ler QR Code</strong>
+            <small style="display:block;color:#6b7280;margin-top:5px">
+              Histórico da máquina
+            </small>
+          </button>
+
+          <button class="secondary"
+                  style="min-height:90px"
+                  onclick="openMessages()">
+            ✉<br><br>
+            <strong>Mensagens</strong>
+            <small style="display:block;color:#6b7280;margin-top:5px">
+              Comunicados
+            </small>
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <section class="card">
+
+        <div class="card-head">
+          <div>
+            <h2>Chamados do dia</h2>
+            <p>03 de setembro de 2026</p>
+          </div>
+        </div>
+
+        <div style="padding:4px 16px 16px">
+
+          <div class="ticket">
+            <div class="ticket-top">
+              <div>
+                <div class="ticket-id">#CH-2418 · 10:44</div>
+                <div class="ticket-title">
+                  Prensa M-102 sem pressão
+                </div>
+                <div class="ticket-meta">
+                  Máquina: M-102
+                </div>
+              </div>
+              <span class="pill red">ABERTO</span>
+            </div>
+          </div>
+
+          <div class="ticket">
+            <div class="ticket-top">
+              <div>
+                <div class="ticket-id">#CH-2417 · 10:18</div>
+                <div class="ticket-title">
+                  Esteira M-207 parada
+                </div>
+                <div class="ticket-meta">
+                  Máquina: M-207
+                </div>
+              </div>
+              <span class="pill blue">EM PROGRESSO</span>
+            </div>
+          </div>
+
+          <div class="ticket">
+            <div class="ticket-top">
+              <div>
+                <div class="ticket-id">#CH-2415 · 09:55</div>
+                <div class="ticket-title">
+                  Inspeção de vibração
+                </div>
+                <div class="ticket-meta">
+                  Máquina: M-118
+                </div>
+              </div>
+              <span class="pill blue">EM PROGRESSO</span>
+            </div>
+          </div>
+
+          <div class="ticket">
+            <div class="ticket-top">
+              <div>
+                <div class="ticket-id">#CH-2411 · 08:12</div>
+                <div class="ticket-title">
+                  Troca de sensor indutivo
+                </div>
+                <div class="ticket-meta">
+                  Máquina: M-331
+                </div>
+              </div>
+              <span class="pill green">CONCLUÍDO</span>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+    </aside>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     PRODUÇÃO
+====================================================== -->
+
+<section class="dashboard" id="production"
+         style="--sector:#16a34a;--sector-soft:#dcfce7">
+
+  <div class="sector-banner"
+       style="--sector:#16a34a;--sector-soft:#dcfce7">
+
+    <div class="sector-banner-left">
+      <div class="banner-icon">🏭</div>
+
+      <div>
+        <h2>Controle de Produção</h2>
+        <p>
+          Produção diária · Metas · Status operacional das máquinas
+        </p>
+      </div>
+    </div>
+
+    <button class="back-btn" onclick="goHome()">
+      ← Voltar aos setores
+    </button>
+
+  </div>
+
+
+  <section class="overview">
+
+    <article class="stat" style="--accent:#16a34a">
+      <div class="stat-label">Produção de hoje</div>
+      <div class="stat-value" id="pProduced">0</div>
+      <div class="stat-sub">peças produzidas</div>
+    </article>
+
+    <article class="stat" style="--accent:#2563eb">
+      <div class="stat-label">Peças aprovadas</div>
+      <div class="stat-value" id="pApproved">0</div>
+      <div class="stat-sub">dentro do padrão</div>
+    </article>
+
+    <article class="stat" style="--accent:#dc2626">
+      <div class="stat-label">Defeitos</div>
+      <div class="stat-value" id="pDefects">0</div>
+      <div class="stat-sub">necessitam análise</div>
+    </article>
+
+    <article class="stat" style="--accent:#7c3aed">
+      <div class="stat-label">Eficiência</div>
+      <div class="stat-value" id="pEfficiency">0%</div>
+      <div class="stat-sub">produção aprovada</div>
+    </article>
+
+  </section>
+
+
+  <div class="layout">
+
+    <section class="card">
+
+      <div class="card-head">
+        <div>
+          <h2>Status das máquinas</h2>
+          <p>
+            O funcionário da produção pode atualizar o status.
+          </p>
+        </div>
+      </div>
+
+      <div class="data-list" id="productionMachines"></div>
+
+    </section>
+
+
+    <aside class="side-stack">
+
+      <section class="card">
+
+        <div class="card-head">
+          <div>
+            <h2>Meta do dia</h2>
+            <p>Objetivo de produção</p>
+          </div>
+        </div>
+
+        <div class="metric-big">
+          <strong id="productionGoalPercent">0%</strong>
+          <span>da meta alcançada</span>
+
+          <div class="progress">
+            <div id="productionGoalBar"
+                 style="background:#16a34a"></div>
+          </div>
+
+          <div style="margin-top:12px;font-size:12px;color:#6b7280">
+            Meta: <strong style="color:#172033">7.500 peças</strong>
+          </div>
+        </div>
+
+      </section>
+
+
+      <section class="card">
+
+        <div class="card-head">
+          <div>
+            <h2>Mensagens do Dia</h2>
+            <p>Comunicados dos supervisores</p>
+          </div>
+
+          <button class="primary"
+                  style="--sector:#16a34a"
+                  onclick="openMessageModal()">
+            + Nova
+          </button>
+        </div>
+
+        <div class="message-list" id="productionMessages"></div>
+
+      </section>
+
+    </aside>
+
+  </div>
+
+
+  <section class="card">
+
+    <div class="card-head">
+      <div>
+        <h2>Produção por máquina</h2>
+        <p>Desempenho individual do turno</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Máquina</th>
+            <th>Status</th>
+            <th>Produção</th>
+            <th>Aprovadas</th>
+            <th>Defeitos</th>
+            <th>Eficiência</th>
+          </tr>
+        </thead>
+
+        <tbody id="productionTable"></tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+</section>
+
+
+<!-- =====================================================
+     QUALIDADE
+====================================================== -->
+
+<section class="dashboard" id="quality">
+
+  <div class="sector-banner"
+       style="--sector:#7c3aed;--sector-soft:#ede9fe">
+
+    <div class="sector-banner-left">
+      <div class="banner-icon">✓</div>
+
+      <div>
+        <h2>Gestão da Qualidade</h2>
+        <p>
+          Inspeções · Conformidade · Não conformidades
+        </p>
+      </div>
+    </div>
+
+    <button class="back-btn" onclick="goHome()">
+      ← Voltar aos setores
+    </button>
+
+  </div>
+
+
+  <section class="overview">
+
+    <article class="stat" style="--accent:#7c3aed">
+      <div class="stat-label">Inspeções hoje</div>
+      <div class="stat-value">48</div>
+      <div class="stat-sub">realizadas</div>
+    </article>
+
+    <article class="stat" style="--accent:#16a34a">
+      <div class="stat-label">Conformidade</div>
+      <div class="stat-value">97,8%</div>
+      <div class="stat-sub">dentro do padrão</div>
+    </article>
+
+    <article class="stat" style="--accent:#dc2626">
+      <div class="stat-label">Não conformidades</div>
+      <div class="stat-value">6</div>
+      <div class="stat-sub">3 críticas</div>
+    </article>
+
+    <article class="stat" style="--accent:#2563eb">
+      <div class="stat-label">Lotes aprovados</div>
+      <div class="stat-value">42</div>
+      <div class="stat-sub">de 48 avaliados</div>
+    </article>
+
+  </section>
+
+
+  <div class="layout">
+
+    <section class="card">
+
+      <div class="card-head">
+        <div>
+          <h2>Painel de inspeções</h2>
+          <p>Acompanhamento das últimas verificações</p>
+        </div>
+      </div>
+
+      <div class="data-list">
+
+        <div class="data-row">
+          <div>
+            <div class="data-title">Lote LT-8841</div>
+            <div class="data-sub">
+              Linha B · Inspeção dimensional
+            </div>
+          </div>
+          <span class="pill green">APROVADO</span>
+        </div>
+
+        <div class="data-row">
+          <div>
+            <div class="data-title">Lote LT-8839</div>
+            <div class="data-sub">
+              Linha A · Inspeção visual
+            </div>
+          </div>
+          <span class="pill yellow">EM ANÁLISE</span>
+        </div>
+
+        <div class="data-row">
+          <div>
+            <div class="data-title">Lote LT-8837</div>
+            <div class="data-sub">
+              Linha C · Teste funcional
+            </div>
+          </div>
+          <span class="pill red">REPROVADO</span>
+        </div>
+
+        <div class="data-row">
+          <div>
+            <div class="data-title">Lote LT-8835</div>
+            <div class="data-sub">
+              Linha A · Inspeção dimensional
+            </div>
+          </div>
+          <span class="pill green">APROVADO</span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <aside class="side-stack">
+
+      <section class="card">
+
+        <div class="card-head">
+          <div>
+            <h2>Não conformidades</h2>
+            <p>Distribuição atual</p>
+          </div>
+        </div>
+
+        <div class="metric-big">
+          <strong>6</strong>
+          <span>ocorrências abertas</span>
+
+          <div style="display:flex;gap:8px;justify-content:center;margin-top:15px">
+            <span class="pill red">3 críticas</span>
+            <span class="pill yellow">3 leves</span>
+          </div>
+        </div>
+
+      </section>
+
+
+      <section class="card">
+
+        <div class="analysis">
+          <strong>🤖 Análise inteligente</strong><br><br>
+          O índice de conformidade está acima da meta de 97%.
+          As principais ocorrências estão concentradas na Linha C.
+          Recomenda-se verificar os lotes associados ao Torno CNC 04.
+        </div>
+
+      </section>
+
+    </aside>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     LOGÍSTICA
+====================================================== -->
+
+<section class="dashboard" id="logistics">
+
+  <div class="sector-banner"
+       style="--sector:#ea580c;--sector-soft:#ffedd5">
+
+    <div class="sector-banner-left">
+      <div class="banner-icon">🚚</div>
+
+      <div>
+        <h2>Central de Logística</h2>
+        <p>
+          Estoque · Pedidos · Expedição · Entregas
+        </p>
+      </div>
+    </div>
+
+    <button class="back-btn" onclick="goHome()">
+      ← Voltar aos setores
+    </button>
+
+  </div>
+
+
+  <section class="overview">
+
+    <article class="stat" style="--accent:#ea580c">
+      <div class="stat-label">Pedidos hoje</div>
+      <div class="stat-value">86</div>
+      <div class="stat-sub">processados</div>
+    </article>
+
+    <article class="stat" style="--accent:#16a34a">
+      <div class="stat-label">Expedidos</div>
+      <div class="stat-value">71</div>
+      <div class="stat-sub">aguardando transporte: 15</div>
+    </article>
+
+    <article class="stat" style="--accent:#2563eb">
+      <div class="stat-label">Itens em estoque</div>
+      <div class="stat-value">12.480</div>
+      <div class="stat-sub">unidades</div>
+    </article>
+
+    <article class="stat" style="--accent:#dc2626">
+      <div class="stat-label">Estoque crítico</div>
+      <div class="stat-value">4</div>
+      <div class="stat-sub">itens abaixo do mínimo</div>
+    </article>
+
+  </section>
+
+
+  <div class="layout">
+
+    <section class="card">
+
+      <div class="card-head">
+        <div>
+          <h2>Movimentações logísticas</h2>
+          <p>Últimas movimentações registradas</p>
+        </div>
+      </div>
+
+      <div class="data-list">
+
+        <div class="data-row">
+          <div>
+            <div class="data-title">PED-4821</div>
+            <div class="data-sub">
+              Pedido pronto para expedição · Docas 02
+            </div>
+          </div>
+          <span class="pill blue">EXPEDIÇÃO</span>
+        </div>
+
+        <div class="data-row">
+          <div>
+            <div class="data-title">REC-1904</div>
+            <div class="data-sub">
+              Recebimento de matéria-prima · 420 unidades
+            </div>
+          </div>
+          <span class="pill green">RECEBIDO</span>
+        </div>
+
+        <div class="data-row">
+          <div>
+            <div class="data-title">PED-4817</div>
+            <div class="data-sub">
+              Transportadora em rota · previsão 14:30
+            </div>
+          </div>
+          <span class="pill yellow">EM TRÂNSITO</span>
+        </div>
+
+        <div class="data-row">
+          <div>
+            <div class="data-title">PED-4811</div>
+            <div class="data-sub">
+              Aguardando separação no estoque
+            </div>
+          </div>
+          <span class="pill purple">SEPARAÇÃO</span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <aside class="side-stack">
+
+      <section class="card">
+
+        <div class="card-head">
+          <div>
+            <h2>Estoque crítico</h2>
+            <p>Itens que precisam de reposição</p>
+          </div>
+        </div>
+
+        <div class="data-list">
+
+          <div class="data-row">
+            <div>
+              <div class="data-title">Rolamento 6204</div>
+              <div class="data-sub">12 unidades</div>
+            </div>
+            <span class="pill red">CRÍTICO</span>
+          </div>
+
+          <div class="data-row">
+            <div>
+              <div class="data-title">Óleo hidráulico</div>
+              <div class="data-sub">18 litros</div>
+            </div>
+            <span class="pill yellow">BAIXO</span>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="card">
+
+        <div class="analysis">
+          <strong>📦 Análise logística</strong><br><br>
+          O fluxo de expedição está normal.
+          Quatro itens apresentam estoque abaixo do mínimo
+          recomendado e devem ser priorizados na próxima compra.
+        </div>
+
+      </section>
+
+    </aside>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     ENGENHARIA
+====================================================== -->
+
+<section class="dashboard" id="engineering">
+
+  <div class="sector-banner"
+       style="--sector:#0891b2;--sector-soft:#cffafe">
+
+    <div class="sector-banner-left">
+      <div class="banner-icon">📐</div>
+
+      <div>
+        <h2>Engenharia</h2>
+        <p>
+          Projetos · Desenvolvimento · Documentação técnica
+        </p>
+      </div>
+    </div>
+
+    <button class="back-btn" onclick="goHome()">
+      ← Voltar aos setores
+    </button>
+
+  </div>
+
+
+  <section class="overview">
+
+    <article class="stat" style="--accent:#0891b2">
+      <div class="stat-label">Projetos ativos</div>
+      <div class="stat-value">8</div>
+      <div class="stat-sub">em desenvolvimento</div>
+    </article>
+
+    <article class="stat" style="--accent:#16a34a">
+      <div class="stat-label">No prazo</div>
+      <div class="stat-value">6</div>
+      <div class="stat-sub">75% dos projetos</div>
+    </article>
+
+    <article class="stat" style="--accent:#d97706">
+      <div class="stat-label">Em atenção</div>
+      <div class="stat-value">2</div>
+      <div class="stat-sub">requerem acompanhamento</div>
+    </article>
+
+    <article class="stat" style="--accent:#7c3aed">
+      <div class="stat-label">Documentos</div>
+      <div class="stat-value">126</div>
+      <div class="stat-sub">versões controladas</div>
+    </article>
+
+  </section>
+
+
+  <div class="layout">
+
+    <section class="card">
+
+      <div class="card-head">
+        <div>
+          <h2>Projetos em andamento</h2>
+          <p>Acompanhamento do desenvolvimento</p>
+        </div>
+      </div>
+
+      <div class="data-list">
+
+        <div class="data-row">
+          <div style="flex:1">
+            <div class="data-title">
+              Projeto Linha B — Automação
+            </div>
+            <div class="data-sub">
+              Desenvolvimento do sistema de automação
+            </div>
+
+            <div class="progress">
+              <div style="width:78%;background:#0891b2"></div>
+            </div>
+          </div>
+
+          <strong>78%</strong>
+        </div>
+
+
+        <div class="data-row">
+          <div style="flex:1">
+            <div class="data-title">
+              Redesign Prensa M-102
+            </div>
+            <div class="data-sub">
+              Adequação do circuito hidráulico
+            </div>
+
+            <div class="progress">
+              <div style="width:54%;background:#0891b2"></div>
+            </div>
+          </div>
+
+          <strong>54%</strong>
+        </div>
+
+
+        <div class="data-row">
+          <div style="flex:1">
+            <div class="data-title">
+              Projeto Centro de Usinagem
+            </div>
+            <div class="data-sub">
+              Otimização do processo produtivo
+            </div>
+
+            <div class="progress">
+              <div style="width:91%;background:#0891b2"></div>
+            </div>
+          </div>
+
+          <strong>91%</strong>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <aside class="side-stack">
+
+      <section class="card">
+
+        <div class="card-head">
+          <div>
+            <h2>Próximos prazos</h2>
+            <p>Agenda de engenharia</p>
+          </div>
+        </div>
+
+        <div class="data-list">
+
+          <div class="data-row">
+            <div>
+              <div class="data-title">Revisão do projeto M-102</div>
+              <div class="data-sub">05/09/2026</div>
+            </div>
+            <span class="pill yellow">2 DIAS</span>
+          </div>
+
+          <div class="data-row">
+            <div>
+              <div class="data-title">Entrega documentação</div>
+              <div class="data-sub">08/09/2026</div>
+            </div>
+            <span class="pill blue">5 DIAS</span>
+          </div>
+
+          <div class="data-row">
+            <div>
+              <div class="data-title">Teste Linha B</div>
+              <div class="data-sub">12/09/2026</div>
+            </div>
+            <span class="pill green">9 DIAS</span>
+          </div>
+
+        </div>
+
+      </section>
+
+    </aside>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     TI
+====================================================== -->
+
+<section class="dashboard" id="it">
+
+  <div class="sector-banner"
+       style="--sector:#db2777;--sector-soft:#fce7f3">
+
+    <div class="sector-banner-left">
+      <div class="banner-icon">💻</div>
+
+      <div>
+        <h2>Tecnologia da Informação</h2>
+        <p>
+          Chamados · Servidores · Rede · Equipamentos
+        </p>
+      </div>
+    </div>
+
+    <button class="back-btn" onclick="goHome()">
+      ← Voltar aos setores
+    </button>
+
+  </div>
+
+
+  <section class="overview">
+
+    <article class="stat" style="--accent:#db2777">
+      <div class="stat-label">Chamados abertos</div>
+      <div class="stat-value">14</div>
+      <div class="stat-sub">3 críticos</div>
+    </article>
+
+    <article class="stat" style="--accent:#16a34a">
+      <div class="stat-label">Servidores</div>
+      <div class="stat-value">12/12</div>
+      <div class="stat-sub">operacionais</div>
+    </article>
+
+    <article class="stat" style="--accent:#2563eb">
+      <div class="stat-label">Rede</div>
+      <div class="stat-value">99,7%</div>
+      <div class="stat-sub">disponibilidade</div>
+    </article>
+
+    <article class="stat" style="--accent:#d97706">
+      <div class="stat-label">Equipamentos</div>
+      <div class="stat-value">86</div>
+      <div class="stat-sub">monitorados</div>
+    </article>
+
+  </section>
+
+
+  <div class="layout">
+
+    <section class="card">
+
+      <div class="card-head">
+
+        <div>
+          <h2>Chamados de TI</h2>
+          <p>Fila de atendimento</p>
+        </div>
+
+        <button class="primary"
+                style="--sector:#db2777"
+                onclick="showToast('Novo chamado aberto com sucesso!')">
+          + Abrir chamado
+        </button>
+
+      </div>
+
+      <div class="data-list">
+
+        <div class="data-row">
+          <div>
+            <div class="data-title">
+              #TI-784 · Sistema indisponível
+            </div>
+            <div class="data-sub">
+              Produção · Servidor de aplicação
+            </div>
+          </div>
+          <span class="pill red">CRÍTICO</span>
+        </div>
+
+        <div class="data-row">
+          <div>
+            <div class="data-title">
+              #TI-781 · Computador sem acesso
+            </div>
+            <div class="data-sub">
+              Logística · Estação 034
+            </div>
+          </div>
+          <span class="pill yellow">EM ANÁLISE</span>
+        </div>
+
+        <div class="data-row">
+          <div>
+            <div class="data-title">
+              #TI-778 · Instalação de software
+            </div>
+            <div class="data-sub">
+              Engenharia · Estação 021
+            </div>
+          </div>
+          <span class="pill blue">EM ATENDIMENTO</span>
+        </div>
+
+        <div class="data-row">
+          <div>
+            <div class="data-title">
+              #TI-774 · Impressora
+            </div>
+            <div class="data-sub">
+              Qualidade · Impressora Q-02
+            </div>
+          </div>
+          <span class="pill green">RESOLVIDO</span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <aside class="side-stack">
+
+      <section class="card">
+
+        <div class="card-head">
+          <div>
+            <h2>Infraestrutura</h2>
+            <p>Status dos recursos</p>
+          </div>
+        </div>
+
+        <div class="data-list">
+
+          <div class="data-row">
+            <div>
+              <div class="data-title">Servidor de arquivos</div>
+              <div class="data-sub">Disponibilidade 99,9%</div>
+            </div>
+            <span class="pill green">ONLINE</span>
+          </div>
+
+          <div class="data-row">
+            <div>
+              <div class="data-title">Servidor de produção</div>
+              <div class="data-sub">Disponibilidade 99,8%</div>
+            </div>
+            <span class="pill green">ONLINE</span>
+          </div>
+
+          <div class="data-row">
+            <div>
+              <div class="data-title">Rede industrial</div>
+              <div class="data-sub">Latência média 8 ms</div>
+            </div>
+            <span class="pill green">NORMAL</span>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="card">
+
+        <div class="analysis"
+             style="background:#fdf2f8;border-color:#f9a8d4">
+
+          <strong style="color:#be185d">
+            🤖 Análise inteligente
+          </strong>
+
+          <br><br>
+
+          A infraestrutura apresenta alta disponibilidade.
+          Existe um chamado crítico relacionado ao sistema de
+          produção que deve ser tratado como prioridade.
+        </div>
+
+      </section>
+
+    </aside>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     CONSULTA DE MÁQUINA
+====================================================== -->
+
+<section class="dashboard" id="machineConsult">
+
+  <div class="sector-banner"
+       style="--sector:#2563eb;--sector-soft:#dbeafe">
+
+    <div class="sector-banner-left">
+
+      <div class="banner-icon">🔎</div>
+
+      <div>
+        <h2>Consulta Inteligente de Máquinas</h2>
+        <p>
+          Consulte status, produção e histórico operacional
+        </p>
+      </div>
+
+    </div>
+
+    <button class="back-btn" onclick="goHome()">
+      ← Voltar
+    </button>
+
+  </div>
+
+
+  <section class="card">
+
+    <div class="consult-box">
+
+      <div style="margin-bottom:15px">
+
+        <h2 style="margin:0 0 5px">
+          Assistente MAQCORE
+        </h2>
+
+        <p style="margin:0;color:#6b7280;font-size:13px">
+          Digite o código da máquina, por exemplo:
+          <strong>M-102</strong>
+        </p>
+
+      </div>
+
+
+      <div class="search-machine">
+
+        <input
+          id="machineSearch"
+          placeholder="Ex.: M-102"
+          onkeydown="if(event.key==='Enter')askMachine()">
+
+        <button class="primary"
+                style="--sector:#2563eb"
+                onclick="askMachine()">
+          Consultar
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="chat" id="chat">
+
+      <div class="bubble bot">
+        Olá! 👋 Sou o assistente MAQCORE.
+        Informe o número de uma máquina e eu mostrarei
+        o status atual, produção do dia, qualidade,
+        manutenção e histórico.
+      </div>
+
+    </div>
+
+  </section>
+
+</section>
+
+</div>
+</main>
+</div>
+
+
+<!-- ================= MODAL MENSAGEM ================= -->
+
+<div class="modal-backdrop" id="messageModal">
+
+  <div class="modal">
+
+    <div class="modal-head">
+
+      <h3 id="messageModalTitle">
+        Nova mensagem do dia
+      </h3>
+
+      <button class="icon-btn"
+              onclick="closeModal('messageModal')">
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <input type="hidden" id="editingMessageId">
+
+      <div class="form-group">
+        <label>Nome do supervisor</label>
+        <input id="messageSender"
+               value="Supervisor de Produção">
+      </div>
+
+      <div class="form-group">
+        <label>Mensagem</label>
+        <textarea id="messageText"
+                  placeholder="Digite a mensagem para a equipe..."></textarea>
+      </div>
+
+      <div class="modal-actions">
+
+        <button class="secondary"
+                onclick="closeModal('messageModal')">
+          Cancelar
+        </button>
+
+        <button class="primary"
+                style="--sector:#16a34a"
+                onclick="saveMessage()">
+          Salvar mensagem
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= MODAL MÁQUINA ================= -->
+
+<div class="modal-backdrop" id="machineModal">
+
+  <div class="modal">
+
+    <div class="modal-head">
+
+      <h3 id="machineModalTitle">
+        Máquina
+      </h3>
+
+      <button class="icon-btn"
+              onclick="closeModal('machineModal')">
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body" id="machineModalBody"></div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= QR DRAWER ================= -->
+
+<div class="modal-backdrop" id="qrModal">
+
+  <div class="modal">
+
+    <div class="modal-head">
+
+      <h3>▣ Leitor de QR Code</h3>
+
+      <button class="icon-btn"
+              onclick="closeModal('qrModal')">
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div style="
+        background:#0f172a;
+        height:230px;
+        border-radius:15px;
+        display:grid;
+        place-items:center;
+        color:#cbd5e1;
+        text-align:center;
+        padding:20px;
+      ">
+        <div>
+          <div style="font-size:48px">▣</div>
+          <strong>Leitor de QR Code</strong>
+          <p style="font-size:12px">
+            Digite o código da máquina abaixo
+            para simular a leitura.
+          </p>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top:15px">
+        <label>Código da máquina</label>
+        <input id="qrInput" placeholder="Ex.: M-102">
+      </div>
+
+      <button class="primary"
+              style="--sector:#2563eb;width:100%"
+              onclick="lookupQR()">
+        Consultar máquina
+      </button>
+
+      <div id="qrResult" style="margin-top:15px"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* ==========================================================
+   DADOS DAS MÁQUINAS
+========================================================== */
+
+const machines = [
+
+  {
+    code:"M-102",
+    name:"Prensa Hidráulica 02",
+    status:"red",
+    statusLabel:"PARADA",
+    problem:"Falha de pressão no circuito hidráulico",
+    lastOccurrence:"03/09/2026 · 10:42",
+    recommendation:"Isolar a máquina, verificar nível de óleo, pressão da bomba e possíveis vazamentos antes da liberação.",
+    lastMaintenance:"28/08/2026",
+    pending:"1 inconformidade crítica pendente",
+    produced:1240,
+    approved:1222,
+    defects:18,
+    history:[
+      ["03/09/2026 · 10:42","Baixa pressão hidráulica","Máquina parada automaticamente; inspeção solicitada."],
+      ["19/08/2026 · 14:10","Vazamento em conexão","Conexão reapertada e vedação substituída."],
+      ["02/08/2026 · 09:30","Ruído anormal da bomba","Lubrificação e inspeção preventiva realizadas."]
+    ]
+  },
+
+  {
+    code:"M-207",
+    name:"Esteira Transportadora 07",
+    status:"red",
+    statusLabel:"PARADA",
+    problem:"Motor principal com sobrecorrente",
+    lastOccurrence:"03/09/2026 · 10:15",
+    recommendation:"Desenergizar, verificar travamento mecânico da esteira, rolamentos e corrente elétrica do motor.",
+    lastMaintenance:"30/08/2026",
+    pending:"2 inconformidades pendentes",
+    produced:980,
+    approved:971,
+    defects:9,
+    history:[
+      ["03/09/2026 · 10:15","Sobrecorrente no motor","Disjuntor atuou; chamado emergencial aberto."],
+      ["23/08/2026 · 11:00","Desalinhamento da correia","Correia realinhada e tensionada."],
+      ["08/08/2026 · 08:25","Sensor de fim de curso","Sensor reposicionado e testado."]
+    ]
+  },
+
+  {
+    code:"M-118",
+    name:"Torno CNC 04",
+    status:"yellow",
+    statusLabel:"ATENÇÃO",
+    problem:"Vibração acima do limite recomendado",
+    lastOccurrence:"03/09/2026 · 09:48",
+    recommendation:"Programar inspeção preventiva ainda no turno e verificar fixação, ferramenta e rolamentos do eixo.",
+    lastMaintenance:"25/08/2026",
+    pending:"1 inconformidade preventiva",
+    produced:760,
+    approved:739,
+    defects:21,
+    history:[
+      ["03/09/2026 · 09:48","Vibração elevada","Equipamento permanece operando com monitoramento reforçado."],
+      ["18/08/2026 · 13:20","Desgaste de ferramenta","Ferramenta substituída."],
+      ["01/08/2026 · 15:50","Alarme de lubrificação","Reservatório reabastecido e linha inspecionada."]
+    ]
+  },
+
+  {
+    code:"M-304",
+    name:"Compressor de Ar 03",
+    status:"yellow",
+    statusLabel:"ATENÇÃO",
+    problem:"Temperatura de descarga elevada",
+    lastOccurrence:"03/09/2026 · 08:55",
+    recommendation:"Verificar ventilação, filtros, nível de óleo e condição do radiador na próxima janela operacional.",
+    lastMaintenance:"27/08/2026",
+    pending:"Sem inconformidade crítica",
+    produced:1105,
+    approved:1098,
+    defects:7,
+    history:[
+      ["03/09/2026 · 08:55","Temperatura elevada","Alerta preventivo registrado."],
+      ["20/08/2026 · 07:45","Filtro saturado","Filtro de admissão substituído."],
+      ["05/08/2026 · 10:15","Dreno automático","Dreno limpo e testado."]
+    ]
+  },
+
+  {
+    code:"M-411",
+    name:"Robô de Solda 01",
+    status:"green",
+    statusLabel:"NORMAL",
+    problem:"Nenhum problema ativo",
+    lastOccurrence:"01/09/2026 · 16:22",
+    recommendation:"Operação liberada. Manter inspeções de rotina conforme plano preventivo.",
+    lastMaintenance:"01/09/2026",
+    pending:"Nenhuma inconformidade pendente",
+    produced:1320,
+    approved:1308,
+    defects:12,
+    history:[
+      ["01/09/2026 · 16:22","Limpeza preventiva","Bicos e sensores limpos."],
+      ["16/08/2026 · 09:10","Falha de comunicação","Cabo de rede reconectado e testado."]
+    ]
+  },
+
+  {
+    code:"M-509",
+    name:"Centro de Usinagem 02",
+    status:"green",
+    statusLabel:"NORMAL",
+    problem:"Nenhum problema ativo",
+    lastOccurrence:"29/08/2026 · 13:30",
+    recommendation:"Operação normal. Próxima preventiva em 12/09/2026.",
+    lastMaintenance:"29/08/2026",
+    pending:"Nenhuma inconformidade pendente",
+    produced:895,
+    approved:881,
+    defects:14,
+    history:[
+      ["29/08/2026 · 13:30","Preventiva programada","Filtros, lubrificação e inspeção elétrica concluídos."],
+      ["12/08/2026 · 10:40","Sensor de porta","Sensor ajustado e validado."]
+    ]
+  }
+
+];
+
+
+/* ==========================================================
+   MENSAGENS
+========================================================== */
+
+let messages = [
+
+  {
+    id:1,
+    sender:"Carlos Mendes · Supervisor",
+    time:"03/09/2026 · 10:50",
+    text:"Priorizar a retomada da Prensa M-102. A produção da Linha B está aguardando liberação da manutenção."
+  },
+
+  {
+    id:2,
+    sender:"Renata Lima · Supervisora",
+    time:"03/09/2026 · 09:20",
+    text:"Meta do turno: manter qualidade acima de 98% e informar desvios imediatamente."
+  },
+
+  {
+    id:3,
+    sender:"Carlos Mendes · Supervisor",
+    time:"03/09/2026 · 07:05",
+    text:"Bom turno, equipe. Conferir os indicadores antes da troca de turno."
+  }
+
+];
+
+let currentSector = null;
+
+
+/* ==========================================================
+   NAVEGAÇÃO
+========================================================== */
+
+function goHome(){
+
+  document.getElementById("home").style.display="flex";
+
+  document.querySelectorAll(".dashboard").forEach(el=>{
+    el.classList.remove("show");
+  });
+
+  document.getElementById("topTitle").textContent =
+    "MAQCORE Hub Central";
+
+  document.getElementById("topSubtitle").textContent =
+    "Gestão integrada · Monitoramento em tempo real";
+
+  document.querySelectorAll(".nav button")
+    .forEach(btn=>btn.classList.remove("active"));
+
+  document.getElementById("navHome").classList.add("active");
+
+  currentSector=null;
+
+  closeMenu();
+}
+
+
+function openSector(sector){
+
+  document.getElementById("home").style.display="none";
+
+  document.querySelectorAll(".dashboard").forEach(el=>{
+    el.classList.remove("show");
+  });
+
+  const selected=document.getElementById(sector);
+
+  if(selected){
+    selected.classList.add("show");
+  }
+
+  currentSector=sector;
+
+  const names={
+    maintenance:"Manutenção Industrial",
+    production:"Controle de Produção",
+    quality:"Gestão da Qualidade",
+    logistics:"Central de Logística",
+    engineering:"Engenharia",
+    it:"Tecnologia da Informação"
+  };
+
+  document.getElementById("topTitle").textContent =
+    "MAQCORE · "+names[sector];
+
+  document.getElementById("topSubtitle").textContent =
+    "Painel operacional · Atualização em tempo real";
+
+  document.querySelectorAll(".nav button")
+    .forEach(btn=>btn.classList.remove("active"));
+
+  closeMenu();
+
+  if(sector==="maintenance"){
+    renderMaintenance();
+  }
+
+  if(sector==="production"){
+    renderProduction();
+  }
+}
+
+
+/* ==========================================================
+   MANUTENÇÃO
+========================================================== */
+
+function renderMaintenance(){
+
+  const order={red:0,yellow:1,green:2};
+
+  const sorted=[...machines]
+    .sort((a,b)=>order[a.status]-order[b.status]);
+
+  document.getElementById("maintenanceMachines").innerHTML =
+    sorted.map(m=>`
+
+      <div class="data-row"
+           onclick="openMachine('${m.code}')"
+           style="
+             border-left:6px solid ${
+               m.status==="red" ? "#dc2626" :
+               m.status==="yellow" ? "#d97706" :
+               "#16a34a"
+             };
+             cursor:pointer;
+           ">
+
+        <div>
+
+          <div class="data-title">
+            ${m.code} · ${m.name}
+          </div>
+
+          <div class="data-sub">
+            Ocorrência: ${m.lastOccurrence}
+          </div>
+
+          <div class="data-sub">
+            ${m.problem}
+          </div>
+
+        </div>
+
+        <span class="pill ${m.status}">
+          ${m.statusLabel}
+        </span>
+
+      </div>
+
+    `).join("");
+
+  document.getElementById("mTotal").textContent=machines.length;
+
+  document.getElementById("mRed").textContent =
+    machines.filter(m=>m.status==="red").length;
+
+  document.getElementById("mYellow").textContent =
+    machines.filter(m=>m.status==="yellow").length;
+
+  document.getElementById("mGreen").textContent =
+    machines.filter(m=>m.status==="green").length;
+}
+
+
+/* ==========================================================
+   PRODUÇÃO
+========================================================== */
+
+function renderProduction(){
+
+  const total=machines.reduce((sum,m)=>sum+m.produced,0);
+  const approved=machines.reduce((sum,m)=>sum+m.approved,0);
+  const defects=machines.reduce((sum,m)=>sum+m.defects,0);
+
+  const efficiency=total
+    ? ((approved/total)*100).toFixed(1)
+    : 0;
+
+  document.getElementById("pProduced").textContent =
+    total.toLocaleString("pt-BR");
+
+  document.getElementById("pApproved").textContent =
+    approved.toLocaleString("pt-BR");
+
+  document.getElementById("pDefects").textContent =
+    defects.toLocaleString("pt-BR");
+
+  document.getElementById("pEfficiency").textContent =
+    efficiency+"%";
+
+  const goal=7500;
+  const percent=Math.min(100,(total/goal)*100);
+
+  document.getElementById("productionGoalPercent")
+    .textContent=percent.toFixed(1)+"%";
+
+  document.getElementById("productionGoalBar")
+    .style.width=percent+"%";
+
+
+  document.getElementById("productionMachines").innerHTML =
+    machines.map(m=>`
+
+      <div class="data-row">
+
+        <div>
+
+          <div class="data-title">
+            ${m.code} · ${m.name}
+          </div>
+
+          <div class="data-sub">
+            Produção atual: ${m.produced.toLocaleString("pt-BR")} peças
+          </div>
+
+          <div class="action-status">
+
+            <button
+              class="status-action green"
+              onclick="event.stopPropagation();changeProductionStatus('${m.code}','green')">
+              🟢 Funcionando
+            </button>
+
+            <button
+              class="status-action yellow"
+              onclick="event.stopPropagation();changeProductionStatus('${m.code}','yellow')">
+              🟡 Observação
+            </button>
+
+            <button
+              class="status-action red"
+              onclick="event.stopPropagation();changeProductionStatus('${m.code}','red')">
+              🔴 Parado
+            </button>
+
+          </div>
+
+        </div>
+
+        <span class="pill ${m.status}">
+          ${m.statusLabel}
+        </span>
+
+      </div>
+
+    `).join("");
+
+
+  document.getElementById("productionTable").innerHTML =
+    machines.map(m=>{
+
+      const eff=((m.approved/m.produced)*100).toFixed(1);
+
+      return `
+
+        <tr>
+
+          <td>
+            <strong>${m.code}</strong><br>
+            <small style="color:#6b7280">
+              ${m.name}
+            </small>
+          </td>
+
+          <td>
+            <span class="pill ${m.status}">
+              ${m.statusLabel}
+            </span>
+          </td>
+
+          <td>${m.produced.toLocaleString("pt-BR")}</td>
+
+          <td>${m.approved.toLocaleString("pt-BR")}</td>
+
+          <td>${m.defects}</td>
+
+          <td>
+            <strong>${eff}%</strong>
+          </td>
+
+        </tr>
+
+      `;
+
+    }).join("");
+
+  renderProductionMessages();
+}
+
+
+/* ==========================================================
+   ALTERAÇÃO DE STATUS DA PRODUÇÃO
+========================================================== */
+
+function changeProductionStatus(code,status){
+
+  const machine=machines.find(m=>m.code===code);
+
+  if(!machine)return;
+
+  machine.status=status;
+
+  const labels={
+    green:"FUNCIONANDO",
+    yellow:"OBSERVAÇÃO",
+    red:"PARADO"
+  };
+
+  machine.statusLabel=labels[status];
+
+  const problem={
+    green:"Nenhum problema ativo",
+    yellow:"Funcionando com necessidade de observação",
+    red:"Máquina parada pela produção"
+  };
+
+  machine.problem=problem[status];
+
+  machine.lastOccurrence="03/09/2026 · "+
+    new Date().toLocaleTimeString("pt-BR",{
+      hour:"2-digit",
+      minute:"2-digit"
+    });
+
+  renderProduction();
+
+  if(currentSector==="maintenance"){
+    renderMaintenance();
+  }
+
+  showToast(
+    `${machine.code} alterada para ${labels[status]}.`
+  );
+}
+
+
+/* ==========================================================
+   MENSAGENS DO DIA
+========================================================== */
+
+function renderProductionMessages(){
+
+  const container=document.getElementById("productionMessages");
+
+  container.innerHTML=messages.map(m=>`
+
+    <div class="message">
+
+      <div class="message-top">
+
+        <strong>${escapeHTML(m.sender)}</strong>
+
+        <time>${m.time}</time>
+
+      </div>
+
+      <p>${escapeHTML(m.text)}</p>
+
+      <div class="message-actions">
+
+        <button class="small-btn"
+                onclick="editMessage(${m.id})">
+          Editar
+        </button>
+
+        <button class="small-btn"
+                onclick="deleteMessage(${m.id})">
+          Excluir
+        </button>
+
+      </div>
+
+    </div>
+
+  `).join("");
+
+  document.getElementById("messageBadge").textContent =
+    messages.length;
+}
+
+
+/* ==========================================================
+   MODAL DE MENSAGEM
+========================================================== */
+
+function openMessageModal(id=null){
+
+  document.getElementById("messageModal").classList.add("show");
+
+  if(id){
+
+    const msg=messages.find(m=>m.id===id);
+
+    if(!msg)return;
+
+    document.getElementById("messageModalTitle")
+      .textContent="Editar mensagem";
+
+    document.getElementById("editingMessageId")
+      .value=id;
+
+    document.getElementById("messageSender")
+      .value=msg.sender;
+
+    document.getElementById("messageText")
+      .value=msg.text;
+
+  }else{
+
+    document.getElementById("messageModalTitle")
+      .textContent="Nova mensagem do dia";
+
+    document.getElementById("editingMessageId")
+      .value="";
+
+    document.getElementById("messageSender")
+      .value="Supervisor de Produção";
+
+    document.getElementById("messageText")
+      .value="";
+  }
+}
+
+
+function saveMessage(){
+
+  const id=document.getElementById("editingMessageId").value;
+
+  const sender=document.getElementById("messageSender").value.trim();
+
+  const text=document.getElementById("messageText").value.trim();
+
+  if(!sender || !text){
+
+    showToast("Preencha todos os campos.");
+
+    return;
+  }
+
+  const now=new Date();
+
+  const time=
+    "03/09/2026 · "+
+    now.toLocaleTimeString("pt-BR",{
+      hour:"2-digit",
+      minute:"2-digit"
+    });
+
+  if(id){
+
+    const msg=messages.find(m=>m.id==id);
+
+    if(msg){
+      msg.sender=sender;
+      msg.text=text;
+      msg.time=time;
+    }
+
+    showToast("Mensagem atualizada.");
+
+  }else{
+
+    messages.unshift({
+      id:Date.now(),
+      sender,
+      text,
+      time
+    });
+
+    showToast("Mensagem publicada.");
+
+  }
+
+  closeModal("messageModal");
+
+  renderProductionMessages();
+}
+
+
+function editMessage(id){
+  openMessageModal(id);
+}
+
+
+function deleteMessage(id){
+
+  if(!confirm("Deseja excluir esta mensagem?"))return;
+
+  messages=messages.filter(m=>m.id!==id);
+
+  renderProductionMessages();
+
+  showToast("Mensagem excluída.");
+}
+
+
+function openMessages(){
+
+  if(currentSector==="production"){
+
+    document.getElementById("productionMessages")
+      .scrollIntoView({
+        behavior:"smooth",
+        block:"center"
+      });
+
+    return;
+  }
+
+  openMessageModal();
+}
+
+
+/* ==========================================================
+   DETALHES DA MÁQUINA
+========================================================== */
+
+function openMachine(code){
+
+  const m=machines.find(x=>x.code===code);
+
+  if(!m)return;
+
+  document.getElementById("machineModalTitle")
+    .textContent=`${m.code} · ${m.name}`;
+
+  document.getElementById("machineModalBody").innerHTML=`
+
+    <div class="result-grid">
+
+      <div class="result-item">
+        <small>Status atual</small>
+        <span class="pill ${m.status}">
+          ${m.statusLabel}
+        </span>
+      </div>
+
+      <div class="result-item">
+        <small>Última ocorrência</small>
+        <strong>${m.lastOccurrence}</strong>
+      </div>
+
+      <div class="result-item">
+        <small>Tipo de problema</small>
+        <strong>${m.problem}</strong>
+      </div>
+
+      <div class="result-item">
+        <small>Última manutenção</small>
+        <strong>${m.lastMaintenance}</strong>
+      </div>
+
+    </div>
+
+    <div style="margin-top:18px">
+
+      <strong>Ação recomendada</strong>
+
+      <div class="analysis">
+        ${m.recommendation}
+      </div>
+
+    </div>
+
+    <div>
+
+      <strong>Inconformidades</strong>
+
+      <div class="result-item" style="margin-top:8px">
+        ${m.pending}
+      </div>
+
+    </div>
+
+    <div style="margin-top:18px">
+
+      <strong>Histórico de problemas</strong>
+
+      <div style="margin-top:10px">
+
+        ${m.history.map(h=>`
+
+          <div class="machine-history">
+
+            <strong>
+              ${h[0]} · ${h[1]}
+            </strong>
+
+            <p>${h[2]}</p>
+
+          </div>
+
+        `).join("")}
+
+      </div>
+
+    </div>
+
+  `;
+
+  document.getElementById("machineModal")
+    .classList.add("show");
+}
+
+
+/* ==========================================================
+   CONSULTA CHATBOT
+========================================================== */
+
+function askMachine(){
+
+  const input=document.getElementById("machineSearch");
+
+  const value=input.value.trim().toUpperCase();
+
+  if(!value){
+
+    showToast("Digite o código da máquina.");
+
+    return;
+  }
+
+  const machine=machines.find(m=>
+    m.code===value ||
+    m.name.toUpperCase().includes(value)
+  );
+
+  const chat=document.getElementById("chat");
+
+  chat.innerHTML+=`
+
+    <div class="bubble user">
+      Consultar máquina: <strong>${escapeHTML(value)}</strong>
+    </div>
+
+  `;
+
+  if(!machine){
+
+    chat.innerHTML+=`
+
+      <div class="bubble bot">
+        Não encontrei essa máquina.
+        Tente um código como <strong>M-102</strong>,
+        <strong>M-207</strong> ou <strong>M-411</strong>.
+      </div>
+
+    `;
+
+    chat.scrollTop=chat.scrollHeight;
+
+    return;
+  }
+
+
+  const efficiency=
+    ((machine.approved/machine.produced)*100).toFixed(1);
+
+
+  chat.innerHTML+=`
+
+    <div class="bubble bot">
+
+      <strong>${machine.code} · ${machine.name}</strong>
+
+      <br><br>
+
+      Status atual:
+
+      <span class="pill ${machine.status}">
+        ${machine.statusLabel}
+      </span>
+
+      <br><br>
+
+      <strong>Produção de hoje:</strong>
+      ${machine.produced.toLocaleString("pt-BR")} peças
+
+      <br>
+
+      <strong>Aprovadas:</strong>
+      ${machine.approved.toLocaleString("pt-BR")}
+
+      <br>
+
+      <strong>Defeitos:</strong>
+      ${machine.defects}
+
+      <br>
+
+      <strong>Eficiência:</strong>
+      ${efficiency}%
+
+      <br><br>
+
+      <strong>Última manutenção:</strong>
+      ${machine.lastMaintenance}
+
+      <br>
+
+      <strong>Ocorrência:</strong>
+      ${machine.lastOccurrence}
+
+      <br><br>
+
+      <strong>Análise:</strong><br>
+      ${machine.recommendation}
+
+    </div>
+
+  `;
+
+  chat.scrollTop=chat.scrollHeight;
+
+  input.value="";
+}
+
+
+/* ==========================================================
+   QR CODE
+========================================================== */
+
+function openQR(){
+
+  document.getElementById("qrModal")
+    .classList.add("show");
+
+}
+
+
+function lookupQR(){
+
+  const value=document.getElementById("qrInput")
+    .value.trim().toUpperCase();
+
+  const machine=machines.find(m=>m.code===value);
+
+  const result=document.getElementById("qrResult");
+
+  if(!machine){
+
+    result.innerHTML=`
+
+      <div class="analysis"
+           style="background:#fff7ed;border-color:#fed7aa">
+
+        Código não encontrado.
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+  result.innerHTML=`
+
+    <div class="result-item">
+
+      <div class="machine-result-header">
+
+        <strong>
+          ${machine.code} · ${machine.name}
+        </strong>
+
+        <span class="pill ${machine.status}">
+          ${machine.statusLabel}
+        </span>
+
+      </div>
+
+      <br>
+
+      <strong>Última manutenção:</strong>
+      ${machine.lastMaintenance}
+
+      <br><br>
+
+      <strong>Inconformidades:</strong>
+      ${machine.pending}
+
+      <br><br>
+
+      <button class="primary"
+              style="--sector:#2563eb"
+              onclick="closeModal('qrModal');openMachine('${machine.code}')">
+        Ver histórico completo
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ==========================================================
+   TEMPO REAL SIMULADO
+========================================================== */
+
+setInterval(()=>{
+
+  machines.forEach(machine=>{
+
+    if(machine.status==="green"){
+
+      machine.produced += Math.floor(Math.random()*4);
+
+      machine.approved += Math.floor(Math.random()*4);
+
+    }
+
+  });
+
+  if(currentSector==="production"){
+    renderProduction();
+  }
+
+},5000);
+
+
+/* ==========================================================
+   RELÓGIO
+========================================================== */
+
+function updateClock(){
+
+  const now=new Date();
+
+  document.getElementById("sideClock")
+    .textContent=
+      now.toLocaleDateString("pt-BR")+" · "+
+      now.toLocaleTimeString("pt-BR");
+
+}
+
+setInterval(updateClock,1000);
+
+updateClock();
+
+
+/* ==========================================================
+   MENU MOBILE
+========================================================== */
+
+function toggleMenu(){
+
+  document.getElementById("sidebar")
+    .classList.toggle("show");
+
+}
+
+function closeMenu(){
+
+  document.getElementById("sidebar")
+    .classList.remove("show");
+
+}
+
+
+/* ==========================================================
+   MODAIS
+========================================================== */
+
+function closeModal(id){
+
+  document.getElementById(id)
+    .classList.remove("show");
+
+}
+
+
+document.querySelectorAll(".modal-backdrop")
+.forEach(backdrop=>{
+
+  backdrop.addEventListener("click",function(e){
+
+    if(e.target===this){
+      this.classList.remove("show");
+    }
+
+  });
+
+});
+
+
+/* ==========================================================
+   TOAST
+========================================================== */
+
+let toastTimer;
+
+function showToast(text){
+
+  const toast=document.getElementById("toast");
+
+  toast.textContent=text;
+
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer=setTimeout(()=>{
+    toast.classList.remove("show");
+  },2500);
+
+}
+
+
+/* ==========================================================
+   SEGURANÇA BÁSICA PARA TEXTOS
+========================================================== */
+
+function escapeHTML(text){
+
+  return String(text)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+/* ==========================================================
+   INICIALIZAÇÃO
+========================================================== */
+
+renderMaintenance();
+
+renderProduction();
+
+</script>
+
+</body>
+</html>
