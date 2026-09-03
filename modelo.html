@@ -1,0 +1,2222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAQCORE - Monitoramento de Produção</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+:root{
+    --bg:#f4f6f8;
+    --card:#ffffff;
+    --dark:#111827;
+    --dark2:#1f2937;
+    --text:#172033;
+    --muted:#7b8494;
+    --border:#e5e9ef;
+    --green:#18a957;
+    --yellow:#f2b632;
+    --red:#e34d59;
+    --blue:#3767d6;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:245px;
+    height:100vh;
+    background:#111827;
+    color:white;
+    padding:25px 18px;
+    z-index:10;
+    transition:.3s;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:0 8px 30px;
+}
+
+.logo-icon{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    background:#3767d6;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.logo strong{
+    display:block;
+    font-size:16px;
+    letter-spacing:.8px;
+}
+
+.logo small{
+    color:#8f9aaa;
+    font-size:10px;
+}
+
+.menu-title{
+    color:#6f7988;
+    font-size:10px;
+    font-weight:bold;
+    letter-spacing:1.2px;
+    padding:10px 10px;
+}
+
+.menu{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.menu button{
+    border:0;
+    background:transparent;
+    color:#aeb6c4;
+    padding:12px 13px;
+    border-radius:9px;
+    text-align:left;
+    cursor:pointer;
+    font-size:13px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    transition:.2s;
+}
+
+.menu button:hover,
+.menu button.active{
+    background:#1f2937;
+    color:white;
+}
+
+.menu-icon{
+    width:22px;
+    text-align:center;
+    font-size:16px;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:245px;
+    min-height:100vh;
+}
+
+.topbar{
+    height:75px;
+    background:white;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+}
+
+.page-title h1{
+    font-size:21px;
+    margin-bottom:4px;
+}
+
+.page-title span{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.update{
+    color:#8992a1;
+    font-size:11px;
+}
+
+.message-button{
+    position:relative;
+    width:38px;
+    height:38px;
+    border:1px solid var(--border);
+    background:white;
+    border-radius:9px;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.badge{
+    position:absolute;
+    right:-3px;
+    top:-5px;
+    background:var(--red);
+    color:white;
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    font-size:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:2px solid white;
+}
+
+.avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:#dbe5fb;
+    color:#3767d6;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    font-weight:bold;
+}
+
+/* CONTENT */
+
+.content{
+    padding:28px 30px;
+    max-width:1500px;
+    margin:auto;
+}
+
+/* KPI */
+
+.kpis{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:22px;
+}
+
+.kpi{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:13px;
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.kpi-info small{
+    color:var(--muted);
+    font-size:10px;
+    font-weight:bold;
+    letter-spacing:.7px;
+}
+
+.kpi-info h2{
+    font-size:27px;
+    margin-top:7px;
+}
+
+.kpi-icon{
+    width:43px;
+    height:43px;
+    border-radius:11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:19px;
+}
+
+.kpi-blue{background:#e9efff;color:#3767d6;}
+.kpi-green{background:#e7f8ee;color:#18a957;}
+.kpi-red{background:#ffeaec;color:#e34d59;}
+.kpi-yellow{background:#fff5db;color:#c88d0c;}
+
+/* GRID */
+
+.grid{
+    display:grid;
+    grid-template-columns:1.25fr .9fr;
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:13px;
+    padding:22px;
+    margin-bottom:20px;
+}
+
+.card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.card-title h3{
+    font-size:15px;
+    margin-bottom:4px;
+}
+
+.card-title p{
+    color:var(--muted);
+    font-size:11px;
+}
+
+.btn{
+    border:0;
+    border-radius:8px;
+    padding:9px 13px;
+    font-size:11px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.btn-primary{
+    background:#3767d6;
+    color:white;
+}
+
+.btn-primary:hover{
+    background:#2e58bc;
+}
+
+.btn-light{
+    background:#f2f4f7;
+    color:#536071;
+}
+
+.btn-danger{
+    background:#fff0f1;
+    color:#d93d4b;
+}
+
+/* MACHINES */
+
+.machine-list{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.machine{
+    border:1px solid var(--border);
+    border-radius:11px;
+    padding:15px;
+}
+
+.machine-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+.machine-name{
+    font-size:12px;
+    font-weight:bold;
+}
+
+.machine-code{
+    color:var(--muted);
+    font-size:10px;
+    margin-top:3px;
+}
+
+.status{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:9px;
+    font-weight:bold;
+    padding:6px 8px;
+    border-radius:20px;
+}
+
+.status-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+}
+
+.running{
+    background:#e9f8ef;
+    color:#168a49;
+}
+
+.running .status-dot{
+    background:#18a957;
+}
+
+.stopped{
+    background:#ffebed;
+    color:#d53c4a;
+}
+
+.stopped .status-dot{
+    background:#e34d59;
+}
+
+.machine-stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:7px;
+}
+
+.mini-stat{
+    background:#f7f8fa;
+    border-radius:7px;
+    padding:9px;
+}
+
+.mini-stat small{
+    display:block;
+    color:#8992a1;
+    font-size:9px;
+    margin-bottom:4px;
+}
+
+.mini-stat strong{
+    font-size:13px;
+}
+
+.machine-actions{
+    margin-top:12px;
+    display:flex;
+    gap:6px;
+}
+
+.machine-actions button{
+    flex:1;
+    padding:7px;
+    border:1px solid var(--border);
+    background:white;
+    border-radius:7px;
+    cursor:pointer;
+    font-size:9px;
+}
+
+.machine-actions button:hover{
+    background:#f4f6f8;
+}
+
+/* PRODUCTION */
+
+.production-item{
+    margin-bottom:18px;
+}
+
+.production-head{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:7px;
+}
+
+.production-name{
+    font-size:11px;
+    font-weight:bold;
+}
+
+.production-value{
+    font-size:10px;
+    color:var(--muted);
+}
+
+.progress{
+    height:8px;
+    background:#edf0f4;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    background:#3767d6;
+    border-radius:20px;
+}
+
+.production-details{
+    display:flex;
+    justify-content:space-between;
+    margin-top:7px;
+}
+
+.production-details span{
+    color:#8a93a1;
+    font-size:9px;
+}
+
+.production-details strong{
+    color:#313b4c;
+}
+
+/* MESSAGES */
+
+.message{
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:13px;
+    margin-bottom:10px;
+}
+
+.message:last-child{
+    margin-bottom:0;
+}
+
+.message-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:8px;
+}
+
+.sender{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.sender-avatar{
+    width:29px;
+    height:29px;
+    background:#e8edfb;
+    color:#3767d6;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:9px;
+    font-weight:bold;
+}
+
+.sender strong{
+    font-size:10px;
+    display:block;
+}
+
+.sender small{
+    font-size:9px;
+    color:#9aa2ae;
+}
+
+.message-time{
+    font-size:9px;
+    color:#9aa2ae;
+}
+
+.message-text{
+    font-size:11px;
+    color:#4d5767;
+    line-height:1.5;
+}
+
+.message-actions{
+    margin-top:10px;
+    display:flex;
+    gap:6px;
+}
+
+.message-actions button{
+    border:0;
+    background:#f4f6f8;
+    color:#647083;
+    padding:5px 8px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:9px;
+}
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    padding:30px 10px;
+    color:#9aa2ae;
+    font-size:11px;
+}
+
+/* MODAL */
+
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.55);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+    padding:20px;
+}
+
+.modal-overlay.show{
+    display:flex;
+}
+
+.modal{
+    width:100%;
+    max-width:480px;
+    background:white;
+    border-radius:15px;
+    padding:24px;
+    box-shadow:0 20px 60px rgba(0,0,0,.2);
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.modal-header h3{
+    font-size:16px;
+}
+
+.close{
+    border:0;
+    background:#f3f5f7;
+    width:30px;
+    height:30px;
+    border-radius:7px;
+    cursor:pointer;
+    font-size:17px;
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+.form-group label{
+    display:block;
+    font-size:10px;
+    font-weight:bold;
+    color:#586273;
+    margin-bottom:7px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+    width:100%;
+    border:1px solid #dfe4ea;
+    border-radius:8px;
+    padding:10px;
+    outline:none;
+    font-size:12px;
+}
+
+.form-group textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+    border-color:#3767d6;
+}
+
+.modal-footer{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    margin-top:20px;
+}
+
+/* TOAST */
+
+.toast{
+    position:fixed;
+    right:25px;
+    bottom:25px;
+    background:#111827;
+    color:white;
+    padding:12px 17px;
+    border-radius:9px;
+    font-size:11px;
+    opacity:0;
+    transform:translateY(15px);
+    pointer-events:none;
+    transition:.3s;
+    z-index:200;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1050px){
+    .kpis{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:800px){
+    .sidebar{
+        width:70px;
+        padding:20px 10px;
+    }
+
+    .logo{
+        justify-content:center;
+        padding:0 0 25px;
+    }
+
+    .logo-text,
+    .menu-title,
+    .menu button span{
+        display:none;
+    }
+
+    .menu button{
+        justify-content:center;
+        padding:13px;
+    }
+
+    .main{
+        margin-left:70px;
+    }
+
+    .topbar{
+        padding:0 18px;
+    }
+
+    .content{
+        padding:20px 15px;
+    }
+}
+
+@media(max-width:600px){
+    .kpis{
+        grid-template-columns:1fr;
+    }
+
+    .machine-list{
+        grid-template-columns:1fr;
+    }
+
+    .update{
+        display:none;
+    }
+
+    .page-title h1{
+        font-size:17px;
+    }
+
+    .content{
+        padding:15px;
+    }
+
+    .card{
+        padding:16px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+        <div class="logo-icon">M</div>
+
+        <div class="logo-text">
+            <strong>MAQCORE</strong>
+            <small>PRODUÇÃO</small>
+        </div>
+    </div>
+
+    <div class="menu-title">MENU PRINCIPAL</div>
+
+    <nav class="menu">
+
+        <button class="active" onclick="go('dashboard')">
+            <span class="menu-icon">▦</span>
+            <span>Dashboard</span>
+        </button>
+
+        <button onclick="go('machines')">
+            <span class="menu-icon">⚙</span>
+            <span>Máquinas</span>
+        </button>
+
+        <button onclick="go('production')">
+            <span class="menu-icon">▥</span>
+            <span>Produção</span>
+        </button>
+
+        <button onclick="go('messages')">
+            <span class="menu-icon">✉</span>
+            <span>Mensagens</span>
+        </button>
+
+    </nav>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+        <div class="page-title">
+
+            <h1>Monitoramento de Produção</h1>
+
+            <span>
+                Acompanhe máquinas, produção e qualidade em tempo real
+            </span>
+
+        </div>
+
+        <div class="top-actions">
+
+            <div class="update">
+                Atualizado: <span id="lastUpdate">--:--:--</span>
+            </div>
+
+            <button class="message-button" onclick="go('messages')">
+                ✉
+                <span class="badge" id="messageBadge">0</span>
+            </button>
+
+            <div class="avatar">
+                OP
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- CONTENT -->
+
+    <section class="content" id="dashboard">
+
+        <!-- KPIs -->
+
+        <div class="kpis">
+
+            <div class="kpi">
+
+                <div class="kpi-info">
+                    <small>PEÇAS PRODUZIDAS</small>
+                    <h2 id="totalProduced">0</h2>
+                </div>
+
+                <div class="kpi-icon kpi-blue">
+                    ▥
+                </div>
+
+            </div>
+
+
+            <div class="kpi">
+
+                <div class="kpi-info">
+                    <small>PEÇAS APROVADAS</small>
+                    <h2 id="totalApproved">0</h2>
+                </div>
+
+                <div class="kpi-icon kpi-green">
+                    ✓
+                </div>
+
+            </div>
+
+
+            <div class="kpi">
+
+                <div class="kpi-info">
+                    <small>COM DEFEITO</small>
+                    <h2 id="totalDefects">0</h2>
+                </div>
+
+                <div class="kpi-icon kpi-red">
+                    !
+                </div>
+
+            </div>
+
+
+            <div class="kpi">
+
+                <div class="kpi-info">
+                    <small>MÁQUINAS PARADAS</small>
+                    <h2 id="stoppedMachines">0</h2>
+                </div>
+
+                <div class="kpi-icon kpi-yellow">
+                    ⚠
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TWO COLUMNS -->
+
+        <div class="grid">
+
+            <!-- LEFT -->
+
+            <div>
+
+                <!-- MACHINES -->
+
+                <div class="card" id="machines">
+
+                    <div class="card-header">
+
+                        <div class="card-title">
+                            <h3>Status das Máquinas</h3>
+                            <p>Funcionamento atual dos equipamentos</p>
+                        </div>
+
+                    </div>
+
+                    <div class="machine-list" id="machineList"></div>
+
+                </div>
+
+
+                <!-- PRODUCTION -->
+
+                <div class="card" id="production">
+
+                    <div class="card-header">
+
+                        <div class="card-title">
+                            <h3>Produção por Máquina</h3>
+                            <p>Acompanhamento das peças produzidas</p>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="openProductionModal()">
+                            + Registrar
+                        </button>
+
+                    </div>
+
+                    <div id="productionList"></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT -->
+
+            <div>
+
+                <!-- QUALITY CARD -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div class="card-title">
+                            <h3>Indicadores de Qualidade</h3>
+                            <p>Resultado geral da produção</p>
+                        </div>
+
+                    </div>
+
+                    <div style="text-align:center;padding:10px 0 20px">
+
+                        <div style="font-size:38px;font-weight:bold" id="qualityPercent">
+                            0%
+                        </div>
+
+                        <div style="font-size:10px;color:#8992a1;margin-top:4px">
+                            ÍNDICE DE APROVAÇÃO
+                        </div>
+
+                    </div>
+
+                    <div class="production-details">
+                        <span>Aprovadas</span>
+                        <strong id="qualityApproved">0</strong>
+                    </div>
+
+                    <div class="production-details">
+                        <span>Com defeito</span>
+                        <strong id="qualityDefects">0</strong>
+                    </div>
+
+                </div>
+
+
+                <!-- MESSAGES -->
+
+                <div class="card" id="messages">
+
+                    <div class="card-header">
+
+                        <div class="card-title">
+                            <h3>Mensagens do Dia</h3>
+                            <p>Orientações dos supervisores</p>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="openMessageModal()">
+                            + Nova
+                        </button>
+
+                    </div>
+
+                    <div id="messageList"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- MESSAGE MODAL -->
+
+<div class="modal-overlay" id="messageModal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h3 id="messageModalTitle">
+                Nova mensagem
+            </h3>
+
+            <button class="close" onclick="closeModal('messageModal')">
+                ×
+            </button>
+
+        </div>
+
+        <form id="messageForm">
+
+            <input type="hidden" id="messageId">
+
+            <div class="form-group">
+
+                <label>Nome do supervisor</label>
+
+                <input
+                    type="text"
+                    id="messageSender"
+                    placeholder="Ex.: Carlos Mendes"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Função</label>
+
+                <input
+                    type="text"
+                    id="messageRole"
+                    value="Supervisor"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Mensagem</label>
+
+                <textarea
+                    id="messageText"
+                    placeholder="Digite a orientação para a equipe..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-light"
+                    onclick="closeModal('messageModal')"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Salvar mensagem
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- PRODUCTION MODAL -->
+
+<div class="modal-overlay" id="productionModal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h3>Registrar produção</h3>
+
+            <button class="close" onclick="closeModal('productionModal')">
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="productionForm">
+
+            <div class="form-group">
+
+                <label>Máquina</label>
+
+                <select id="productionMachine" required></select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Quantidade produzida</label>
+
+                <input
+                    type="number"
+                    id="productionQuantity"
+                    min="1"
+                    placeholder="Ex.: 100"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Quantidade com defeito</label>
+
+                <input
+                    type="number"
+                    id="productionDefects"
+                    min="0"
+                    value="0"
+                    required
+                >
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-light"
+                    onclick="closeModal('productionModal')"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Registrar
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div class="toast" id="toast">
+    Operação realizada com sucesso!
+</div>
+
+
+<script>
+
+/* =========================================================
+   DADOS INICIAIS
+========================================================= */
+
+const initialData = {
+
+    machines: [
+
+        {
+            id:"M-102",
+            name:"Prensa Hidráulica 02",
+            status:"running",
+            produced:1240,
+            defects:18
+        },
+
+        {
+            id:"M-207",
+            name:"Esteira Transportadora 07",
+            status:"running",
+            produced:980,
+            defects:9
+        },
+
+        {
+            id:"M-118",
+            name:"Torno CNC 04",
+            status:"stopped",
+            produced:760,
+            defects:21
+        },
+
+        {
+            id:"M-304",
+            name:"Compressor de Ar 03",
+            status:"running",
+            produced:1105,
+            defects:7
+        },
+
+        {
+            id:"M-411",
+            name:"Robô de Solda 01",
+            status:"running",
+            produced:1320,
+            defects:12
+        },
+
+        {
+            id:"M-509",
+            name:"Centro de Usinagem 02",
+            status:"running",
+            produced:895,
+            defects:14
+        }
+
+    ],
+
+
+    messages: [
+
+        {
+            id:1,
+            sender:"Carlos Mendes",
+            role:"Supervisor",
+            text:"Priorizar a retomada do Torno CNC 04 e registrar qualquer ocorrência no sistema.",
+            date:"2026-09-03T10:50:00"
+        },
+
+        {
+            id:2,
+            sender:"Renata Lima",
+            role:"Supervisora",
+            text:"Meta do turno: manter qualidade acima de 98% e informar desvios imediatamente.",
+            date:"2026-09-03T09:20:00"
+        },
+
+        {
+            id:3,
+            sender:"Carlos Mendes",
+            role:"Supervisor",
+            text:"Bom turno, equipe. Conferir indicadores antes da troca de turno.",
+            date:"2026-09-03T07:05:00"
+        }
+
+    ]
+
+};
+
+
+/* =========================================================
+   CARREGAR DADOS
+========================================================= */
+
+let data;
+
+function loadData(){
+
+    const saved = localStorage.getItem("maqcore_producao");
+
+    if(saved){
+
+        data = JSON.parse(saved);
+
+    }else{
+
+        data = JSON.parse(JSON.stringify(initialData));
+
+        saveData();
+
+    }
+
+    render();
+
+}
+
+
+/* =========================================================
+   SALVAR
+========================================================= */
+
+function saveData(){
+
+    localStorage.setItem(
+        "maqcore_producao",
+        JSON.stringify(data)
+    );
+
+}
+
+
+/* =========================================================
+   RENDER PRINCIPAL
+========================================================= */
+
+function render(){
+
+    renderKPIs();
+    renderMachines();
+    renderProduction();
+    renderMessages();
+    updateTime();
+
+}
+
+
+/* =========================================================
+   KPIs
+========================================================= */
+
+function renderKPIs(){
+
+    let produced = 0;
+    let defects = 0;
+    let stopped = 0;
+
+    data.machines.forEach(machine => {
+
+        produced += machine.produced;
+        defects += machine.defects;
+
+        if(machine.status === "stopped"){
+            stopped++;
+        }
+
+    });
+
+    const approved = produced - defects;
+
+    const quality =
+        produced > 0
+        ? ((approved / produced) * 100).toFixed(1)
+        : 0;
+
+
+    document.getElementById("totalProduced").textContent =
+        produced.toLocaleString("pt-BR");
+
+    document.getElementById("totalApproved").textContent =
+        approved.toLocaleString("pt-BR");
+
+    document.getElementById("totalDefects").textContent =
+        defects.toLocaleString("pt-BR");
+
+    document.getElementById("stoppedMachines").textContent =
+        stopped;
+
+    document.getElementById("qualityPercent").textContent =
+        quality + "%";
+
+    document.getElementById("qualityApproved").textContent =
+        approved.toLocaleString("pt-BR");
+
+    document.getElementById("qualityDefects").textContent =
+        defects.toLocaleString("pt-BR");
+
+}
+
+
+/* =========================================================
+   MÁQUINAS
+========================================================= */
+
+function renderMachines(){
+
+    const container =
+        document.getElementById("machineList");
+
+    container.innerHTML = "";
+
+
+    data.machines.forEach(machine => {
+
+        const approved =
+            machine.produced - machine.defects;
+
+        const statusClass =
+            machine.status === "running"
+            ? "running"
+            : "stopped";
+
+        const statusText =
+            machine.status === "running"
+            ? "FUNCIONANDO"
+            : "PARADA";
+
+
+        const html = `
+
+            <div class="machine">
+
+                <div class="machine-top">
+
+                    <div>
+
+                        <div class="machine-name">
+                            ${machine.name}
+                        </div>
+
+                        <div class="machine-code">
+                            ${machine.id}
+                        </div>
+
+                    </div>
+
+                    <div class="status ${statusClass}">
+
+                        <span class="status-dot"></span>
+
+                        ${statusText}
+
+                    </div>
+
+                </div>
+
+
+                <div class="machine-stats">
+
+                    <div class="mini-stat">
+
+                        <small>Produzidas</small>
+
+                        <strong>
+                            ${machine.produced.toLocaleString("pt-BR")}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="mini-stat">
+
+                        <small>Aprovadas</small>
+
+                        <strong>
+                            ${approved.toLocaleString("pt-BR")}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="mini-stat">
+
+                        <small>Defeitos</small>
+
+                        <strong>
+                            ${machine.defects.toLocaleString("pt-BR")}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="machine-actions">
+
+                    <button onclick="toggleStatus('${machine.id}')">
+
+                        ${
+                            machine.status === "running"
+                            ? "⏹ Parar"
+                            : "▶ Ligar"
+                        }
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+        container.innerHTML += html;
+
+    });
+
+}
+
+
+/* =========================================================
+   PRODUÇÃO
+========================================================= */
+
+function renderProduction(){
+
+    const container =
+        document.getElementById("productionList");
+
+    container.innerHTML = "";
+
+
+    const maxProduced =
+        Math.max(...data.machines.map(m => m.produced));
+
+
+    data.machines.forEach(machine => {
+
+        const approved =
+            machine.produced - machine.defects;
+
+        const percentage =
+            Math.round(
+                (machine.produced / maxProduced) * 100
+            );
+
+
+        const html = `
+
+            <div class="production-item">
+
+                <div class="production-head">
+
+                    <div class="production-name">
+                        ${machine.name}
+                    </div>
+
+                    <div class="production-value">
+                        ${machine.produced.toLocaleString("pt-BR")} peças
+                    </div>
+
+                </div>
+
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        style="width:${percentage}%"
+                    ></div>
+
+                </div>
+
+
+                <div class="production-details">
+
+                    <span>
+                        Aprovadas:
+                        <strong>
+                            ${approved.toLocaleString("pt-BR")}
+                        </strong>
+                    </span>
+
+                    <span>
+                        Defeitos:
+                        <strong>
+                            ${machine.defects.toLocaleString("pt-BR")}
+                        </strong>
+                    </span>
+
+                </div>
+
+            </div>
+
+        `;
+
+        container.innerHTML += html;
+
+    });
+
+}
+
+
+/* =========================================================
+   MENSAGENS
+========================================================= */
+
+function renderMessages(){
+
+    const container =
+        document.getElementById("messageList");
+
+    const badge =
+        document.getElementById("messageBadge");
+
+    badge.textContent =
+        data.messages.length;
+
+
+    if(data.messages.length === 0){
+
+        container.innerHTML = `
+            <div class="empty">
+                Nenhuma mensagem registrada.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    const sorted =
+        [...data.messages].sort(
+            (a,b) =>
+            new Date(b.date) - new Date(a.date)
+        );
+
+
+    container.innerHTML = "";
+
+
+    sorted.forEach(message => {
+
+        const initials =
+            message.sender
+            .split(" ")
+            .map(word => word[0])
+            .slice(0,2)
+            .join("")
+            .toUpperCase();
+
+
+        const date =
+            new Date(message.date);
+
+
+        const time =
+            date.toLocaleTimeString(
+                "pt-BR",
+                {
+                    hour:"2-digit",
+                    minute:"2-digit"
+                }
+            );
+
+
+        const html = `
+
+            <div class="message">
+
+                <div class="message-head">
+
+                    <div class="sender">
+
+                        <div class="sender-avatar">
+                            ${initials}
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                ${message.sender}
+                            </strong>
+
+                            <small>
+                                ${message.role}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="message-time">
+                        ${time}
+                    </div>
+
+                </div>
+
+
+                <div class="message-text">
+                    ${escapeHTML(message.text)}
+                </div>
+
+
+                <div class="message-actions">
+
+                    <button
+                        onclick="editMessage(${message.id})"
+                    >
+                        ✏ Editar
+                    </button>
+
+                    <button
+                        onclick="deleteMessage(${message.id})"
+                    >
+                        🗑 Remover
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+        container.innerHTML += html;
+
+    });
+
+}
+
+
+/* =========================================================
+   STATUS DA MÁQUINA
+========================================================= */
+
+function toggleStatus(id){
+
+    const machine =
+        data.machines.find(
+            m => m.id === id
+        );
+
+
+    if(!machine) return;
+
+
+    machine.status =
+        machine.status === "running"
+        ? "stopped"
+        : "running";
+
+
+    saveData();
+
+    render();
+
+    showToast(
+        machine.status === "running"
+        ? "Máquina ligada."
+        : "Máquina parada."
+    );
+
+}
+
+
+/* =========================================================
+   MODAL DE MENSAGEM
+========================================================= */
+
+function openMessageModal(message = null){
+
+    document.getElementById("messageModal")
+        .classList.add("show");
+
+
+    document.getElementById("messageForm")
+        .reset();
+
+
+    document.getElementById("messageId")
+        .value = "";
+
+
+    document.getElementById("messageRole")
+        .value = "Supervisor";
+
+
+    document.getElementById("messageModalTitle")
+        .textContent = "Nova mensagem";
+
+
+    if(message){
+
+        document.getElementById("messageModalTitle")
+            .textContent = "Editar mensagem";
+
+
+        document.getElementById("messageId")
+            .value = message.id;
+
+
+        document.getElementById("messageSender")
+            .value = message.sender;
+
+
+        document.getElementById("messageRole")
+            .value = message.role;
+
+
+        document.getElementById("messageText")
+            .value = message.text;
+
+    }
+
+}
+
+
+/* =========================================================
+   EDITAR MENSAGEM
+========================================================= */
+
+function editMessage(id){
+
+    const message =
+        data.messages.find(
+            m => m.id === id
+        );
+
+
+    if(message){
+
+        openMessageModal(message);
+
+    }
+
+}
+
+
+/* =========================================================
+   SALVAR MENSAGEM
+========================================================= */
+
+document.getElementById("messageForm")
+.addEventListener("submit", function(event){
+
+    event.preventDefault();
+
+
+    const id =
+        document.getElementById("messageId").value;
+
+
+    const sender =
+        document.getElementById("messageSender").value.trim();
+
+
+    const role =
+        document.getElementById("messageRole").value.trim();
+
+
+    const text =
+        document.getElementById("messageText").value.trim();
+
+
+    if(!sender || !role || !text){
+
+        showToast("Preencha todos os campos.");
+
+        return;
+
+    }
+
+
+    if(id){
+
+        const message =
+            data.messages.find(
+                m => String(m.id) === String(id)
+            );
+
+
+        if(message){
+
+            message.sender = sender;
+            message.role = role;
+            message.text = text;
+
+        }
+
+        showToast("Mensagem atualizada.");
+
+    }else{
+
+        data.messages.push({
+
+            id:Date.now(),
+
+            sender,
+
+            role,
+
+            text,
+
+            date:new Date().toISOString()
+
+        });
+
+        showToast("Mensagem publicada.");
+
+    }
+
+
+    saveData();
+
+    render();
+
+    closeModal("messageModal");
+
+});
+
+
+/* =========================================================
+   REMOVER MENSAGEM
+========================================================= */
+
+function deleteMessage(id){
+
+    const confirmDelete =
+        confirm(
+            "Deseja realmente remover esta mensagem?"
+        );
+
+
+    if(!confirmDelete) return;
+
+
+    data.messages =
+        data.messages.filter(
+            message => message.id !== id
+        );
+
+
+    saveData();
+
+    render();
+
+    showToast("Mensagem removida.");
+
+}
+
+
+/* =========================================================
+   MODAL DE PRODUÇÃO
+========================================================= */
+
+function openProductionModal(){
+
+    const select =
+        document.getElementById("productionMachine");
+
+
+    select.innerHTML = "";
+
+
+    data.machines.forEach(machine => {
+
+        select.innerHTML += `
+
+            <option value="${machine.id}">
+                ${machine.id} - ${machine.name}
+            </option>
+
+        `;
+
+    });
+
+
+    document.getElementById("productionQuantity")
+        .value = "";
+
+    document.getElementById("productionDefects")
+        .value = "0";
+
+
+    document.getElementById("productionModal")
+        .classList.add("show");
+
+}
+
+
+/* =========================================================
+   SALVAR PRODUÇÃO
+========================================================= */
+
+document.getElementById("productionForm")
+.addEventListener("submit", function(event){
+
+    event.preventDefault();
+
+
+    const machineId =
+        document.getElementById("productionMachine").value;
+
+
+    const quantity =
+        Number(
+            document.getElementById("productionQuantity").value
+        );
+
+
+    const defects =
+        Number(
+            document.getElementById("productionDefects").value
+        );
+
+
+    if(quantity <= 0){
+
+        showToast("Informe uma quantidade válida.");
+
+        return;
+
+    }
+
+
+    if(defects < 0 || defects > quantity){
+
+        showToast(
+            "A quantidade de defeitos não pode ser maior que a produção."
+        );
+
+        return;
+
+    }
+
+
+    const machine =
+        data.machines.find(
+            m => m.id === machineId
+        );
+
+
+    if(!machine) return;
+
+
+    machine.produced += quantity;
+
+    machine.defects += defects;
+
+
+    saveData();
+
+    render();
+
+    closeModal("productionModal");
+
+    showToast("Produção registrada com sucesso.");
+
+});
+
+
+/* =========================================================
+   FECHAR MODAL
+========================================================= */
+
+function closeModal(id){
+
+    document.getElementById(id)
+        .classList.remove("show");
+
+}
+
+
+/* =========================================================
+   NAVEGAÇÃO
+========================================================= */
+
+function go(id){
+
+    const element =
+        document.getElementById(id);
+
+
+    if(element){
+
+        element.scrollIntoView({
+            behavior:"smooth"
+        });
+
+    }
+
+
+    document.querySelectorAll(".menu button")
+    .forEach(button => {
+
+        button.classList.remove("active");
+
+    });
+
+
+    const buttons =
+        document.querySelectorAll(".menu button");
+
+
+    if(id === "dashboard")
+        buttons[0].classList.add("active");
+
+    if(id === "machines")
+        buttons[1].classList.add("active");
+
+    if(id === "production")
+        buttons[2].classList.add("active");
+
+    if(id === "messages")
+        buttons[3].classList.add("active");
+
+}
+
+
+/* =========================================================
+   HORA DA ATUALIZAÇÃO
+========================================================= */
+
+function updateTime(){
+
+    const now = new Date();
+
+
+    document.getElementById("lastUpdate")
+        .textContent =
+        now.toLocaleTimeString(
+            "pt-BR",
+            {
+                hour:"2-digit",
+                minute:"2-digit",
+                second:"2-digit"
+            }
+        );
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimeout;
+
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+
+    clearTimeout(toastTimeout);
+
+
+    toastTimeout =
+        setTimeout(() => {
+
+            toast.classList.remove("show");
+
+        }, 2500);
+
+}
+
+
+/* =========================================================
+   SEGURANÇA BÁSICA PARA TEXTO DAS MENSAGENS
+========================================================= */
+
+function escapeHTML(text){
+
+    return text
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   FECHAR MODAL CLICANDO FORA
+========================================================= */
+
+document.querySelectorAll(".modal-overlay")
+.forEach(overlay => {
+
+    overlay.addEventListener("click", function(event){
+
+        if(event.target === overlay){
+
+            overlay.classList.remove("show");
+
+        }
+
+    });
+
+});
+
+
+/* =========================================================
+   ATUALIZAÇÃO DO RELÓGIO
+========================================================= */
+
+setInterval(updateTime, 1000);
+
+
+/* =========================================================
+   INICIALIZAR
+========================================================= */
+
+loadData();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,3093 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MAQCORE - Hub Central de Gestão</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+:root{
+    --bg:#f4f6f8;
+    --card:#ffffff;
+    --dark:#111827;
+    --dark2:#1f2937;
+    --text:#172033;
+    --muted:#7b8494;
+    --border:#e5e9ef;
+
+    --blue:#3767d6;
+    --green:#18a957;
+    --yellow:#f2b632;
+    --red:#e34d59;
+    --purple:#7b61d1;
+    --orange:#e77d2d;
+    --cyan:#159bb5;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+}
+
+button,
+input{
+    font:inherit;
+}
+
+.hidden{
+    display:none !important;
+}
+
+/* =====================================================
+TELA INICIAL
+===================================================== */
+
+.landing{
+    min-height:100vh;
+    background:
+        radial-gradient(circle at top right, #263c62 0, transparent 35%),
+        linear-gradient(135deg,#101827,#1d2b42);
+
+    color:white;
+    padding:45px 6vw;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    margin-bottom:65px;
+}
+
+.brand-icon{
+    width:48px;
+    height:48px;
+    border-radius:14px;
+    background:var(--blue);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:25px;
+    font-weight:bold;
+}
+
+.brand strong{
+    display:block;
+    font-size:18px;
+    letter-spacing:1px;
+}
+
+.brand small{
+    display:block;
+    color:#9ba8bb;
+    font-size:10px;
+    letter-spacing:1.5px;
+    margin-top:4px;
+}
+
+.landing h1{
+    font-size:42px;
+    max-width:760px;
+    line-height:1.08;
+    margin-bottom:13px;
+}
+
+.landing-subtitle{
+    color:#aeb9c8;
+    max-width:650px;
+    font-size:15px;
+    line-height:1.6;
+    margin-bottom:38px;
+}
+
+.sectors{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:17px;
+    max-width:1050px;
+}
+
+.sector-card{
+    border:1px solid rgba(255,255,255,.10);
+    background:rgba(255,255,255,.07);
+
+    border-radius:17px;
+    padding:22px;
+
+    text-align:left;
+    color:white;
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.sector-card:hover{
+    transform:translateY(-4px);
+    background:rgba(255,255,255,.11);
+}
+
+.sector-icon{
+    width:44px;
+    height:44px;
+
+    border-radius:12px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:20px;
+    margin-bottom:17px;
+}
+
+.sector-card h3{
+    font-size:16px;
+    margin-bottom:7px;
+}
+
+.sector-card p{
+    font-size:11px;
+    color:#aeb9c8;
+    line-height:1.5;
+}
+
+.maintenance .sector-icon{
+    background:#263b68;
+}
+
+.production .sector-icon{
+    background:#245f4a;
+}
+
+.quality .sector-icon{
+    background:#654d22;
+}
+
+.logistics .sector-icon{
+    background:#65402a;
+}
+
+.engineering .sector-icon{
+    background:#4e3f7b;
+}
+
+.ti .sector-icon{
+    background:#225d68;
+}
+
+/* =====================================================
+SIDEBAR
+===================================================== */
+
+.app{
+    min-height:100vh;
+}
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+
+    width:245px;
+    height:100vh;
+
+    background:#111827;
+    color:white;
+
+    padding:24px 18px;
+
+    z-index:20;
+}
+
+.logo{
+    display:flex;
+    gap:11px;
+    align-items:center;
+
+    padding:0 8px 28px;
+}
+
+.logo .brand-icon{
+    width:41px;
+    height:41px;
+    font-size:20px;
+}
+
+.logo strong{
+    display:block;
+    font-size:15px;
+    letter-spacing:.7px;
+}
+
+.logo small{
+    font-size:9px;
+    color:#7f8b9e;
+}
+
+.menu-title{
+    font-size:9px;
+    color:#697487;
+
+    letter-spacing:1.1px;
+
+    padding:10px;
+}
+
+.menu button{
+    width:100%;
+
+    border:0;
+    background:transparent;
+
+    color:#aeb6c4;
+
+    padding:11px 12px;
+
+    border-radius:9px;
+
+    text-align:left;
+
+    cursor:pointer;
+
+    font-size:12px;
+
+    margin:3px 0;
+}
+
+.menu button:hover,
+.menu button.active{
+    background:#1f2937;
+    color:white;
+}
+
+.menu button span{
+    margin-right:9px;
+}
+
+.sector-switch{
+    margin-top:25px;
+
+    border-top:1px solid #263042;
+
+    padding-top:18px;
+}
+
+.sector-switch button{
+    width:100%;
+
+    background:#263042;
+    color:white;
+
+    border:0;
+
+    border-radius:8px;
+
+    padding:9px;
+
+    font-size:10px;
+
+    cursor:pointer;
+}
+
+/* =====================================================
+MAIN
+===================================================== */
+
+.main{
+    margin-left:245px;
+    min-height:100vh;
+}
+
+.topbar{
+    height:75px;
+
+    background:white;
+
+    border-bottom:1px solid var(--border);
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 30px;
+}
+
+.title h1{
+    font-size:20px;
+    margin-bottom:4px;
+}
+
+.title span{
+    font-size:11px;
+    color:var(--muted);
+}
+
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.live{
+    font-size:10px;
+    color:var(--green);
+    font-weight:bold;
+}
+
+.clock{
+    font-size:11px;
+    color:#7f8896;
+}
+
+.avatar{
+    width:38px;
+    height:38px;
+
+    border-radius:50%;
+
+    background:#e2e9fb;
+    color:var(--blue);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:12px;
+    font-weight:bold;
+}
+
+.content{
+    padding:26px 30px;
+
+    max-width:1500px;
+
+    margin:auto;
+}
+
+/* =====================================================
+KPIs
+===================================================== */
+
+.kpis{
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:16px;
+
+    margin-bottom:20px;
+}
+
+.kpi{
+    background:white;
+
+    border:1px solid var(--border);
+
+    border-radius:13px;
+
+    padding:18px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.kpi small{
+    font-size:9px;
+
+    color:var(--muted);
+
+    font-weight:bold;
+
+    letter-spacing:.7px;
+}
+
+.kpi h2{
+    font-size:25px;
+    margin-top:7px;
+}
+
+.kpi-icon{
+    width:42px;
+    height:42px;
+
+    border-radius:11px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:18px;
+}
+
+.blue{
+    background:#e9efff;
+    color:var(--blue);
+}
+
+.green{
+    background:#e7f8ee;
+    color:var(--green);
+}
+
+.yellow{
+    background:#fff5db;
+    color:#c88d0c;
+}
+
+.red{
+    background:#ffeaec;
+    color:var(--red);
+}
+
+/* =====================================================
+CARDS
+===================================================== */
+
+.grid{
+    display:grid;
+
+    grid-template-columns:1.2fr .8fr;
+
+    gap:20px;
+}
+
+.card{
+    background:white;
+
+    border:1px solid var(--border);
+
+    border-radius:13px;
+
+    padding:21px;
+
+    margin-bottom:20px;
+}
+
+.card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:18px;
+}
+
+.card-header h3{
+    font-size:14px;
+}
+
+.card-header p{
+    font-size:10px;
+    color:var(--muted);
+
+    margin-top:4px;
+}
+
+.btn{
+    border:0;
+
+    border-radius:8px;
+
+    padding:9px 12px;
+
+    font-size:10px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+.btn-primary{
+    background:var(--blue);
+    color:white;
+}
+
+.btn-light{
+    background:#f1f3f6;
+    color:#526071;
+}
+
+/* =====================================================
+MÁQUINAS
+===================================================== */
+
+.machine-list{
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:11px;
+}
+
+.machine{
+    border:1px solid var(--border);
+
+    border-radius:10px;
+
+    padding:14px;
+}
+
+.machine-top{
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    margin-bottom:11px;
+}
+
+.machine-name{
+    font-size:11px;
+    font-weight:bold;
+}
+
+.machine-code{
+    font-size:9px;
+    color:var(--muted);
+
+    margin-top:3px;
+}
+
+.status{
+    font-size:8px;
+
+    font-weight:bold;
+
+    padding:5px 7px;
+
+    border-radius:20px;
+
+    white-space:nowrap;
+
+    height:max-content;
+}
+
+.status-running{
+    background:#e8f8ee;
+    color:#168a49;
+}
+
+.status-stopped{
+    background:#ffebed;
+    color:#d53c4a;
+}
+
+.status-dot{
+    display:inline-block;
+
+    width:6px;
+    height:6px;
+
+    border-radius:50%;
+
+    background:currentColor;
+
+    margin-right:5px;
+}
+
+.machine-stats{
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:6px;
+}
+
+.mini-stat{
+    background:#f7f8fa;
+
+    border-radius:6px;
+
+    padding:8px;
+}
+
+.mini-stat small{
+    font-size:8px;
+
+    color:#8b94a1;
+
+    display:block;
+
+    margin-bottom:3px;
+}
+
+.mini-stat strong{
+    font-size:11px;
+}
+
+/* =====================================================
+BARRAS
+===================================================== */
+
+.bar-row{
+    margin:14px 0;
+}
+
+.bar-head{
+    display:flex;
+
+    justify-content:space-between;
+
+    font-size:9px;
+
+    margin-bottom:6px;
+}
+
+.bar{
+    height:7px;
+
+    background:#edf0f4;
+
+    border-radius:20px;
+
+    overflow:hidden;
+}
+
+.bar-fill{
+    height:100%;
+
+    background:var(--blue);
+
+    border-radius:20px;
+}
+
+/* =====================================================
+ANÁLISE
+===================================================== */
+
+.analysis{
+    background:linear-gradient(135deg,#eff4ff,#f8faff);
+
+    border:1px solid #dce5fa;
+}
+
+.analysis strong{
+    font-size:11px;
+}
+
+.analysis p{
+    font-size:10px;
+
+    color:#536071;
+
+    line-height:1.55;
+
+    margin-top:8px;
+}
+
+/* =====================================================
+ALERTAS
+===================================================== */
+
+.alert{
+    display:flex;
+
+    gap:10px;
+
+    padding:12px;
+
+    border-radius:9px;
+
+    background:#fff8e8;
+
+    margin-bottom:9px;
+}
+
+.alert strong{
+    font-size:10px;
+}
+
+.alert p{
+    font-size:9px;
+
+    color:#717b8a;
+
+    margin-top:3px;
+
+    line-height:1.4;
+}
+
+/* =====================================================
+CHATBOT
+===================================================== */
+
+.chat{
+    height:350px;
+
+    display:flex;
+
+    flex-direction:column;
+}
+
+.chat-body{
+    flex:1;
+
+    overflow:auto;
+
+    padding:4px 2px;
+}
+
+.bubble{
+    max-width:88%;
+
+    padding:10px 12px;
+
+    border-radius:10px;
+
+    font-size:10px;
+
+    line-height:1.5;
+
+    margin-bottom:9px;
+}
+
+.bot{
+    background:#f1f4f8;
+    color:#465365;
+}
+
+.user{
+    background:#3767d6;
+    color:white;
+
+    margin-left:auto;
+}
+
+.chat-input{
+    display:flex;
+
+    gap:7px;
+
+    border-top:1px solid var(--border);
+
+    padding-top:12px;
+}
+
+.chat-input input{
+    flex:1;
+
+    border:1px solid var(--border);
+
+    border-radius:8px;
+
+    padding:10px;
+
+    font-size:10px;
+
+    outline:none;
+}
+
+.chat-input input:focus{
+    border-color:var(--blue);
+}
+
+.chat-input button{
+    width:42px;
+
+    border:0;
+
+    border-radius:8px;
+
+    background:var(--blue);
+
+    color:white;
+
+    cursor:pointer;
+}
+
+/* =====================================================
+INDICADORES DO SETOR
+===================================================== */
+
+.sector-box{
+    border:1px solid var(--border);
+
+    border-radius:10px;
+
+    padding:14px;
+
+    margin-bottom:10px;
+}
+
+.sector-box h4{
+    font-size:11px;
+
+    margin-bottom:5px;
+}
+
+.sector-box p{
+    font-size:9px;
+
+    color:var(--muted);
+
+    line-height:1.5;
+}
+
+/* =====================================================
+TOAST
+===================================================== */
+
+.toast{
+    position:fixed;
+
+    right:22px;
+    bottom:22px;
+
+    background:#111827;
+    color:white;
+
+    padding:11px 15px;
+
+    border-radius:8px;
+
+    font-size:10px;
+
+    opacity:0;
+
+    transform:translateY(10px);
+
+    transition:.25s;
+
+    z-index:200;
+}
+
+.toast.show{
+    opacity:1;
+    transform:none;
+}
+
+/* =====================================================
+RESPONSIVO
+===================================================== */
+
+@media(max-width:1050px){
+
+    .kpis{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .sectors{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:800px){
+
+    .sidebar{
+        width:70px;
+
+        padding:20px 9px;
+    }
+
+    .logo{
+        justify-content:center;
+    }
+
+    .logo-text,
+    .menu-title,
+    .menu button b,
+    .sector-switch{
+        display:none;
+    }
+
+    .menu button{
+        text-align:center;
+    }
+
+    .main{
+        margin-left:70px;
+    }
+
+    .topbar{
+        padding:0 17px;
+    }
+
+    .content{
+        padding:18px;
+    }
+
+    .machine-list{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .landing{
+        padding:30px 20px;
+    }
+
+    .landing h1{
+        font-size:31px;
+    }
+
+    .sectors{
+        grid-template-columns:1fr;
+    }
+
+    .kpis{
+        grid-template-columns:1fr;
+    }
+
+    .live{
+        display:none;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+TELA INICIAL
+===================================================== -->
+
+<section class="landing" id="landing">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            M
+        </div>
+
+        <div>
+
+            <strong>
+                MAQCORE
+            </strong>
+
+            <small>
+                HUB CENTRAL DE GESTÃO
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <h1>
+        Gestão integrada de toda a operação.
+    </h1>
+
+    <p class="landing-subtitle">
+        Selecione um setor para acessar seu dashboard,
+        acompanhar indicadores em tempo real e consultar máquinas
+        pelo assistente inteligente.
+    </p>
+
+
+    <div class="sectors">
+
+        <button
+            class="sector-card maintenance"
+            onclick="selectSector('Manutenção')"
+        >
+
+            <div class="sector-icon">
+                ⚙
+            </div>
+
+            <h3>
+                Manutenção
+            </h3>
+
+            <p>
+                Ordens, ocorrências, manutenção preventiva
+                e disponibilidade dos equipamentos.
+            </p>
+
+        </button>
+
+
+        <button
+            class="sector-card production"
+            onclick="selectSector('Produção')"
+        >
+
+            <div class="sector-icon">
+                ▥
+            </div>
+
+            <h3>
+                Produção
+            </h3>
+
+            <p>
+                Produção diária, peças aprovadas,
+                defeitos e desempenho das máquinas.
+            </p>
+
+        </button>
+
+
+        <button
+            class="sector-card quality"
+            onclick="selectSector('Qualidade')"
+        >
+
+            <div class="sector-icon">
+                ✓
+            </div>
+
+            <h3>
+                Qualidade
+            </h3>
+
+            <p>
+                Não conformidades, inspeções,
+                defeitos e índice de aprovação.
+            </p>
+
+        </button>
+
+
+        <button
+            class="sector-card logistics"
+            onclick="selectSector('Logística')"
+        >
+
+            <div class="sector-icon">
+                ▰
+            </div>
+
+            <h3>
+                Logística
+            </h3>
+
+            <p>
+                Estoque, materiais,
+                expedição e recebimentos.
+            </p>
+
+        </button>
+
+
+        <button
+            class="sector-card engineering"
+            onclick="selectSector('Engenharia')"
+        >
+
+            <div class="sector-icon">
+                ⌘
+            </div>
+
+            <h3>
+                Engenharia
+            </h3>
+
+            <p>
+                Projetos, melhorias,
+                eficiência e análise técnica.
+            </p>
+
+        </button>
+
+
+        <button
+            class="sector-card ti"
+            onclick="selectSector('TI')"
+        >
+
+            <div class="sector-icon">
+                ◉
+            </div>
+
+            <h3>
+                TI
+            </h3>
+
+            <p>
+                Infraestrutura, sistemas,
+                chamados e disponibilidade.
+            </p>
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+APLICAÇÃO
+===================================================== -->
+
+<div class="app hidden" id="app">
+
+
+<!-- =====================================================
+SIDEBAR
+===================================================== -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        <div class="brand-icon">
+            M
+        </div>
+
+        <div class="logo-text">
+
+            <strong>
+                MAQCORE
+            </strong>
+
+            <small id="sideSector">
+                GESTÃO
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <div class="menu-title">
+        NAVEGAÇÃO
+    </div>
+
+
+    <nav class="menu">
+
+        <button
+            class="active"
+            onclick="showTab('dashboard',this)"
+        >
+
+            <span>▦</span>
+
+            <b>
+                Dashboard
+            </b>
+
+        </button>
+
+
+        <button
+            onclick="showTab('machines',this)"
+        >
+
+            <span>⚙</span>
+
+            <b>
+                Consulta de Máquinas
+            </b>
+
+        </button>
+
+
+        <button
+            onclick="showTab('sector',this)"
+        >
+
+            <span>▤</span>
+
+            <b>
+                Indicadores do Setor
+            </b>
+
+        </button>
+
+    </nav>
+
+
+    <div class="sector-switch">
+
+        <button onclick="backHome()">
+            ← Trocar setor
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- =====================================================
+CONTEÚDO PRINCIPAL
+===================================================== -->
+
+<main class="main">
+
+
+<!-- TOPBAR -->
+
+<header class="topbar">
+
+    <div class="title">
+
+        <h1 id="pageTitle">
+            Dashboard
+        </h1>
+
+        <span id="subtitle">
+            Resumo operacional do dia
+        </span>
+
+    </div>
+
+
+    <div class="top-actions">
+
+        <span class="live">
+            ● ATUALIZAÇÃO AUTOMÁTICA
+        </span>
+
+        <span
+            class="clock"
+            id="clock"
+        >
+            --:--:--
+        </span>
+
+        <div class="avatar">
+            GE
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+DASHBOARD
+===================================================== -->
+
+<section
+    class="content"
+    id="dashboardTab"
+>
+
+
+<div class="kpis">
+
+    <div class="kpi">
+
+        <div>
+
+            <small id="kpiLabel1">
+                PRODUÇÃO DO DIA
+            </small>
+
+            <h2 id="kpi1">
+                6.300
+            </h2>
+
+        </div>
+
+        <div class="kpi-icon blue">
+            ▥
+        </div>
+
+    </div>
+
+
+    <div class="kpi">
+
+        <div>
+
+            <small id="kpiLabel2">
+                EFICIÊNCIA
+            </small>
+
+            <h2 id="kpi2">
+                94,8%
+            </h2>
+
+        </div>
+
+        <div class="kpi-icon green">
+            ↗
+        </div>
+
+    </div>
+
+
+    <div class="kpi">
+
+        <div>
+
+            <small id="kpiLabel3">
+                OCORRÊNCIAS
+            </small>
+
+            <h2 id="kpi3">
+                08
+            </h2>
+
+        </div>
+
+        <div class="kpi-icon yellow">
+            !
+        </div>
+
+    </div>
+
+
+    <div class="kpi">
+
+        <div>
+
+            <small id="kpiLabel4">
+                STATUS CRÍTICO
+            </small>
+
+            <h2 id="kpi4">
+                01
+            </h2>
+
+        </div>
+
+        <div class="kpi-icon red">
+            ⚠
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="grid">
+
+
+<!-- COLUNA ESQUERDA -->
+
+<div>
+
+
+<div class="card">
+
+    <div class="card-header">
+
+        <div>
+
+            <h3>
+                Status das Máquinas
+            </h3>
+
+            <p>
+                Visão geral dos equipamentos conectados
+            </p>
+
+        </div>
+
+        <button
+            class="btn btn-light"
+            onclick="showTab('machines')"
+        >
+            Consultar
+        </button>
+
+    </div>
+
+
+    <div
+        class="machine-list"
+        id="machineList"
+    >
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <div class="card-header">
+
+        <div>
+
+            <h3>
+                Desempenho Operacional
+            </h3>
+
+            <p>
+                Comparativo dos principais indicadores
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div id="bars">
+    </div>
+
+</div>
+
+
+</div>
+
+
+<!-- COLUNA DIREITA -->
+
+<div>
+
+
+<div class="card analysis">
+
+    <div class="card-header">
+
+        <div>
+
+            <h3>
+                ✦ Análise Inteligente
+            </h3>
+
+            <p>
+                Leitura automática dos indicadores
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <strong id="analysisTitle">
+        Operação estável com um ponto de atenção.
+    </strong>
+
+
+    <p id="analysisText">
+        A produção geral permanece dentro da meta.
+    </p>
+
+</div>
+
+
+<div class="card">
+
+    <div class="card-header">
+
+        <div>
+
+            <h3>
+                Alertas do Setor
+            </h3>
+
+            <p>
+                Eventos que merecem atenção
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div id="alerts">
+    </div>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+CONSULTA DE MÁQUINAS
+===================================================== -->
+
+<section
+    class="content hidden"
+    id="machinesTab"
+>
+
+
+<div class="card">
+
+    <div class="card-header">
+
+        <div>
+
+            <h3>
+                Consulta de Máquinas
+            </h3>
+
+            <p>
+                Digite o número ou nome da máquina
+                para conversar com o assistente.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="chat">
+
+        <div
+            class="chat-body"
+            id="chatBody"
+        >
+
+            <div class="bubble bot">
+
+                Olá! Sou o assistente MAQCORE.
+
+                <br><br>
+
+                Você pode digitar:
+
+                <br>
+
+                <b>M-118</b>
+
+                <br>
+
+                ou
+
+                <br>
+
+                <b>Torno CNC 04</b>
+
+                <br><br>
+
+                Eu mostrarei status,
+                produção atual e histórico da máquina.
+
+            </div>
+
+        </div>
+
+
+        <div class="chat-input">
+
+            <input
+                id="machineInput"
+                placeholder="Digite o código da máquina..."
+                onkeydown="if(event.key==='Enter') askMachine()"
+            >
+
+
+            <button onclick="askMachine()">
+                ➤
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <div class="card-header">
+
+        <div>
+
+            <h3>
+                Resumo dos Equipamentos
+            </h3>
+
+            <p>
+                Consulta rápida para gestores
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="machine-list"
+        id="machineList2"
+    >
+    </div>
+
+</div>
+
+
+</section>
+
+
+<!-- =====================================================
+INDICADORES
+===================================================== -->
+
+<section
+    class="content hidden"
+    id="sectorTab"
+>
+
+
+<div class="grid">
+
+
+<div class="card">
+
+    <div class="card-header">
+
+        <div>
+
+            <h3 id="sectorTitle">
+                Indicadores do Setor
+            </h3>
+
+            <p>
+                Dados simulados para demonstração
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div id="sectorContent">
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <div class="card-header">
+
+        <div>
+
+            <h3>
+                Visão Gerencial
+            </h3>
+
+            <p>
+                Resumo automático
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="analysis">
+
+        <strong id="managerTitle">
+            Setor dentro da normalidade.
+        </strong>
+
+        <p id="managerText">
+            Os indicadores principais permanecem
+            dentro dos níveis esperados.
+        </p>
+
+    </div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+</main>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast"
+>
+</div>
+
+
+<script>
+
+/* =====================================================
+BANCO DE DADOS SIMULADO
+===================================================== */
+
+const machines = [
+
+    {
+        id:"M-102",
+        name:"Prensa Hidráulica 02",
+        status:"running",
+        produced:1240,
+        defects:18,
+        maintenance:"15/08/2026",
+        history:
+        "Nos últimos 6 meses apresentou média de 1.180 peças por dia e disponibilidade de 96,2%."
+    },
+
+    {
+        id:"M-207",
+        name:"Esteira Transportadora 07",
+        status:"running",
+        produced:980,
+        defects:9,
+        maintenance:"20/08/2026",
+        history:
+        "Nos últimos 6 meses apresentou média de 940 peças por dia e disponibilidade de 98,1%."
+    },
+
+    {
+        id:"M-118",
+        name:"Torno CNC 04",
+        status:"stopped",
+        produced:760,
+        defects:21,
+        maintenance:"01/09/2026",
+        history:
+        "Nos últimos 6 meses apresentou média de 820 peças por dia. Possui uma parada crítica registrada hoje."
+    },
+
+    {
+        id:"M-304",
+        name:"Compressor de Ar 03",
+        status:"running",
+        produced:1105,
+        defects:7,
+        maintenance:"22/08/2026",
+        history:
+        "Nos últimos 6 meses apresentou disponibilidade de 97,4%."
+    },
+
+    {
+        id:"M-411",
+        name:"Robô de Solda 01",
+        status:"running",
+        produced:1320,
+        defects:12,
+        maintenance:"28/08/2026",
+        history:
+        "Nos últimos 6 meses apresentou média de 1.260 peças por dia e disponibilidade de 99%."
+    },
+
+    {
+        id:"M-509",
+        name:"Centro de Usinagem 02",
+        status:"running",
+        produced:895,
+        defects:14,
+        maintenance:"19/08/2026",
+        history:
+        "Nos últimos 6 meses apresentou média de 860 peças por dia e disponibilidade de 95,8%."
+    }
+
+];
+
+
+/* =====================================================
+DADOS DOS SETORES
+===================================================== */
+
+const sectorData = {
+
+    "Manutenção":{
+
+        labels:[
+            "ORDENS DO DIA",
+            "DISPONIBILIDADE",
+            "PENDÊNCIAS",
+            "MÁQUINAS CRÍTICAS"
+        ],
+
+        values:[
+            "12",
+            "96,4%",
+            "08",
+            "01"
+        ],
+
+        bars:[
+
+            [
+                "Preventivas concluídas",
+                88
+            ],
+
+            [
+                "Ordens encerradas",
+                76
+            ],
+
+            [
+                "Disponibilidade",
+                96
+            ]
+
+        ],
+
+        alerts:[
+
+            "Torno CNC 04 requer intervenção.",
+
+            "3 manutenções preventivas vencem hoje."
+
+        ]
+
+    },
+
+
+    "Produção":{
+
+        labels:[
+            "PRODUÇÃO DO DIA",
+            "EFICIÊNCIA",
+            "OCORRÊNCIAS",
+            "MÁQUINAS PARADAS"
+        ],
+
+        values:[
+            "6.300",
+            "94,8%",
+            "08",
+            "01"
+        ],
+
+        bars:[
+
+            [
+                "Meta diária",
+                91
+            ],
+
+            [
+                "Eficiência",
+                95
+            ],
+
+            [
+                "Qualidade",
+                98
+            ]
+
+        ],
+
+        alerts:[
+
+            "Torno CNC 04 está parado.",
+
+            "Meta do turno está em 91% do planejado."
+
+        ]
+
+    },
+
+
+    "Qualidade":{
+
+        labels:[
+            "ITENS INSPECIONADOS",
+            "APROVAÇÃO",
+            "NÃO CONFORMIDADES",
+            "LOTES PENDENTES"
+        ],
+
+        values:[
+            "6.300",
+            "98,1%",
+            "14",
+            "02"
+        ],
+
+        bars:[
+
+            [
+                "Aprovação",
+                98
+            ],
+
+            [
+                "Inspeções realizadas",
+                93
+            ],
+
+            [
+                "Conformidade",
+                97
+            ]
+
+        ],
+
+        alerts:[
+
+            "2 lotes aguardam inspeção final.",
+
+            "Índice de defeitos acima da meta na máquina M-118."
+
+        ]
+
+    },
+
+
+    "Logística":{
+
+        labels:[
+            "MOVIMENTAÇÕES",
+            "ENTREGAS NO PRAZO",
+            "PENDÊNCIAS",
+            "ESTOQUE CRÍTICO"
+        ],
+
+        values:[
+            "428",
+            "96,7%",
+            "06",
+            "01"
+        ],
+
+        bars:[
+
+            [
+                "Expedição",
+                97
+            ],
+
+            [
+                "Estoque",
+                92
+            ],
+
+            [
+                "Entregas",
+                95
+            ]
+
+        ],
+
+        alerts:[
+
+            "1 carga aguardando conferência.",
+
+            "Estoque do item MAT-204 está abaixo do mínimo."
+
+        ]
+
+    },
+
+
+    "Engenharia":{
+
+        labels:[
+            "PROJETOS ATIVOS",
+            "EFICIÊNCIA",
+            "PENDÊNCIAS",
+            "PROJETOS CRÍTICOS"
+        ],
+
+        values:[
+            "17",
+            "93,5%",
+            "05",
+            "01"
+        ],
+
+        bars:[
+
+            [
+                "Projetos no prazo",
+                94
+            ],
+
+            [
+                "Melhorias implantadas",
+                87
+            ],
+
+            [
+                "Eficiência técnica",
+                93
+            ]
+
+        ],
+
+        alerts:[
+
+            "Projeto de redução de setup está em validação.",
+
+            "Engenharia solicitou novos dados da máquina M-118."
+
+        ]
+
+    },
+
+
+    "TI":{
+
+        labels:[
+            "DISPONIBILIDADE",
+            "SLA ATENDIDO",
+            "CHAMADOS ABERTOS",
+            "INCIDENTES CRÍTICOS"
+        ],
+
+        values:[
+            "99,2%",
+            "97,8%",
+            "04",
+            "00"
+        ],
+
+        bars:[
+
+            [
+                "Disponibilidade",
+                99
+            ],
+
+            [
+                "Chamados dentro do SLA",
+                98
+            ],
+
+            [
+                "Infraestrutura",
+                96
+            ]
+
+        ],
+
+        alerts:[
+
+            "4 chamados estão em atendimento.",
+
+            "Nenhum incidente crítico ativo."
+
+        ]
+
+    }
+
+};
+
+
+let currentSector = "Produção";
+
+
+/* =====================================================
+SELECIONAR SETOR
+===================================================== */
+
+function selectSector(sector){
+
+    currentSector = sector;
+
+    document
+        .getElementById("landing")
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById("app")
+        .classList
+        .remove("hidden");
+
+
+    document
+        .getElementById("sideSector")
+        .textContent =
+        sector.toUpperCase();
+
+
+    document
+        .getElementById("pageTitle")
+        .textContent =
+        "Dashboard de " + sector;
+
+
+    applySector();
+
+    renderMachines();
+
+    renderMachines2();
+
+    showTab("dashboard");
+
+    showToast(
+        "Setor selecionado: " + sector
+    );
+
+}
+
+
+/* =====================================================
+VOLTAR PARA SELEÇÃO
+===================================================== */
+
+function backHome(){
+
+    document
+        .getElementById("app")
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById("landing")
+        .classList
+        .remove("hidden");
+
+}
+
+
+/* =====================================================
+APLICAR DADOS DO SETOR
+===================================================== */
+
+function applySector(){
+
+    const data =
+        sectorData[currentSector];
+
+
+    document
+        .getElementById("kpiLabel1")
+        .textContent =
+        data.labels[0];
+
+
+    document
+        .getElementById("kpiLabel2")
+        .textContent =
+        data.labels[1];
+
+
+    document
+        .getElementById("kpiLabel3")
+        .textContent =
+        data.labels[2];
+
+
+    document
+        .getElementById("kpiLabel4")
+        .textContent =
+        data.labels[3];
+
+
+    document
+        .getElementById("kpi1")
+        .textContent =
+        data.values[0];
+
+
+    document
+        .getElementById("kpi2")
+        .textContent =
+        data.values[1];
+
+
+    document
+        .getElementById("kpi3")
+        .textContent =
+        data.values[2];
+
+
+    document
+        .getElementById("kpi4")
+        .textContent =
+        data.values[3];
+
+
+    renderBars(data);
+
+    renderAlerts(data);
+
+    renderAnalysis();
+
+    renderSectorIndicators(data);
+
+}
+
+
+/* =====================================================
+BARRAS
+===================================================== */
+
+function renderBars(data){
+
+    const container =
+        document.getElementById("bars");
+
+
+    container.innerHTML = "";
+
+
+    data.bars.forEach(item => {
+
+        container.innerHTML += `
+
+            <div class="bar-row">
+
+                <div class="bar-head">
+
+                    <span>
+                        ${item[0]}
+                    </span>
+
+                    <strong>
+                        ${item[1]}%
+                    </strong>
+
+                </div>
+
+
+                <div class="bar">
+
+                    <div
+                        class="bar-fill"
+                        style="width:${item[1]}%"
+                    >
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+
+/* =====================================================
+ALERTAS
+===================================================== */
+
+function renderAlerts(data){
+
+    const container =
+        document.getElementById("alerts");
+
+
+    container.innerHTML = "";
+
+
+    data.alerts.forEach((alert,index) => {
+
+        container.innerHTML += `
+
+            <div class="alert">
+
+                <span>
+                    ${index === 0 ? "⚠" : "•"}
+                </span>
+
+                <div>
+
+                    <strong>
+                        ${alert}
+                    </strong>
+
+                    <p>
+                        Atualização operacional registrada pelo sistema.
+                    </p>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+
+/* =====================================================
+ANÁLISE INTELIGENTE
+===================================================== */
+
+function renderAnalysis(){
+
+    let title =
+        "Operação estável com pontos de atenção.";
+
+
+    let text =
+        "Os indicadores do setor permanecem dentro dos níveis esperados.";
+
+
+    if(currentSector === "Produção"){
+
+        title =
+            "Produção próxima da meta, com impacto de uma máquina parada.";
+
+        text =
+            "O Torno CNC 04 está parado e pode afetar o fechamento do turno. A qualidade permanece alta e as demais máquinas estão operacionais.";
+
+    }
+
+
+    if(currentSector === "Manutenção"){
+
+        title =
+            "Prioridade recomendada para a máquina M-118.";
+
+        text =
+            "A análise indica necessidade de priorizar o Torno CNC 04. Também existem manutenções preventivas próximas do vencimento.";
+
+    }
+
+
+    if(currentSector === "Qualidade"){
+
+        title =
+            "Qualidade geral elevada, porém existem inspeções pendentes.";
+
+        text =
+            "O índice de aprovação permanece superior a 98%, mas dois lotes ainda precisam de inspeção final e a máquina M-118 apresenta maior número de defeitos.";
+
+    }
+
+
+    if(currentSector === "Logística"){
+
+        title =
+            "Fluxo logístico dentro do planejado.";
+
+        text =
+            "O setor mantém bom índice de entregas. O principal ponto de atenção é um item de estoque abaixo do nível mínimo.";
+
+    }
+
+
+    if(currentSector === "Engenharia"){
+
+        title =
+            "Projetos avançam dentro do cronograma.";
+
+        text =
+            "A maioria dos projetos está dentro do prazo. O projeto de redução de setup está em fase de validação.";
+
+    }
+
+
+    if(currentSector === "TI"){
+
+        title =
+            "Infraestrutura estável e sem incidentes críticos.";
+
+        text =
+            "A disponibilidade dos sistemas está acima de 99%. Existem chamados em andamento, porém nenhum representa risco crítico à operação.";
+
+    }
+
+
+    document
+        .getElementById("analysisTitle")
+        .textContent =
+        title;
+
+
+    document
+        .getElementById("analysisText")
+        .textContent =
+        text;
+
+
+    document
+        .getElementById("managerTitle")
+        .textContent =
+        title;
+
+
+    document
+        .getElementById("managerText")
+        .textContent =
+        text;
+
+}
+
+
+/* =====================================================
+INDICADORES SETORIAIS
+===================================================== */
+
+function renderSectorIndicators(data){
+
+    document
+        .getElementById("sectorTitle")
+        .textContent =
+        "Indicadores de " + currentSector;
+
+
+    const container =
+        document.getElementById("sectorContent");
+
+
+    container.innerHTML = "";
+
+
+    data.bars.forEach(item => {
+
+        container.innerHTML += `
+
+            <div class="sector-box">
+
+                <h4>
+                    ${item[0]}
+                </h4>
+
+                <p>
+                    Indicador atual:
+                    <strong>${item[1]}%</strong>
+                </p>
+
+
+                <div
+                    class="bar"
+                    style="margin-top:8px"
+                >
+
+                    <div
+                        class="bar-fill"
+                        style="width:${item[1]}%"
+                    >
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+
+/* =====================================================
+MÁQUINAS
+===================================================== */
+
+function machineHTML(machine){
+
+    const approved =
+        machine.produced -
+        machine.defects;
+
+
+    const quality =
+        (
+            approved /
+            machine.produced *
+            100
+        )
+        .toFixed(1);
+
+
+    return `
+
+        <div class="machine">
+
+            <div class="machine-top">
+
+                <div>
+
+                    <div class="machine-name">
+                        ${machine.name}
+                    </div>
+
+                    <div class="machine-code">
+                        ${machine.id}
+                    </div>
+
+                </div>
+
+
+                <span
+                    class="status ${
+                        machine.status === "running"
+                        ? "status-running"
+                        : "status-stopped"
+                    }"
+                >
+
+                    <span class="status-dot">
+                    </span>
+
+                    ${
+                        machine.status === "running"
+                        ? "FUNCIONANDO"
+                        : "PARADA"
+                    }
+
+                </span>
+
+            </div>
+
+
+            <div class="machine-stats">
+
+                <div class="mini-stat">
+
+                    <small>
+                        Produção
+                    </small>
+
+                    <strong>
+                        ${machine.produced.toLocaleString("pt-BR")}
+                    </strong>
+
+                </div>
+
+
+                <div class="mini-stat">
+
+                    <small>
+                        Qualidade
+                    </small>
+
+                    <strong>
+                        ${quality}%
+                    </strong>
+
+                </div>
+
+
+                <div class="mini-stat">
+
+                    <small>
+                        Defeitos
+                    </small>
+
+                    <strong>
+                        ${machine.defects}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+RENDER MÁQUINAS
+===================================================== */
+
+function renderMachines(){
+
+    document
+        .getElementById("machineList")
+        .innerHTML =
+        machines
+        .map(machineHTML)
+        .join("");
+
+}
+
+
+function renderMachines2(){
+
+    document
+        .getElementById("machineList2")
+        .innerHTML =
+        machines
+        .map(machineHTML)
+        .join("");
+
+}
+
+
+/* =====================================================
+CHATBOT
+===================================================== */
+
+function askMachine(){
+
+    const input =
+        document.getElementById("machineInput");
+
+
+    const query =
+        input.value
+        .trim();
+
+
+    if(!query){
+        return;
+    }
+
+
+    addBubble(
+        escapeHTML(query),
+        "user"
+    );
+
+
+    input.value = "";
+
+
+    const machine =
+        machines.find(machine => {
+
+            return (
+
+                machine.id
+                .toLowerCase() ===
+                query.toLowerCase()
+
+                ||
+
+                machine.name
+                .toLowerCase()
+                .includes(
+                    query.toLowerCase()
+                )
+
+            );
+
+        });
+
+
+    setTimeout(() => {
+
+        if(!machine){
+
+            addBubble(
+
+                `
+                Não encontrei essa máquina.
+
+                <br><br>
+
+                Tente códigos como:
+
+                <br>
+
+                <b>M-102</b>
+
+                <br>
+
+                <b>M-118</b>
+
+                <br>
+
+                <b>M-411</b>
+                `,
+
+                "bot"
+            );
+
+            return;
+
+        }
+
+
+        const approved =
+            machine.produced -
+            machine.defects;
+
+
+        const quality =
+            (
+                approved /
+                machine.produced *
+                100
+            )
+            .toFixed(1);
+
+
+        let statusText;
+
+
+        if(machine.status === "running"){
+
+            statusText =
+                "🟢 Funcionando normalmente";
+
+        }else{
+
+            statusText =
+                "🔴 Máquina parada";
+
+        }
+
+
+        const response = `
+
+            <b>
+                ${machine.name}
+                (${machine.id})
+            </b>
+
+            <br><br>
+
+            <b>Status:</b>
+            ${statusText}
+
+            <br>
+
+            <b>Produção de hoje:</b>
+            ${machine.produced.toLocaleString("pt-BR")}
+            peças
+
+            <br>
+
+            <b>Peças aprovadas:</b>
+            ${approved.toLocaleString("pt-BR")}
+
+            <br>
+
+            <b>Defeitos:</b>
+            ${machine.defects}
+
+            <br>
+
+            <b>Qualidade:</b>
+            ${quality}%
+
+            <br>
+
+            <b>Última manutenção:</b>
+            ${machine.maintenance}
+
+            <br><br>
+
+            <b>Histórico de longo prazo:</b>
+
+            <br>
+
+            ${machine.history}
+
+            <br><br>
+
+            ${
+                machine.status === "stopped"
+
+                ?
+
+                "<b>Recomendação:</b> encaminhar a máquina para avaliação da equipe de manutenção."
+
+                :
+
+                "<b>Recomendação:</b> equipamento dentro dos parâmetros atuais de operação."
+            }
+
+        `;
+
+
+        addBubble(
+            response,
+            "bot"
+        );
+
+
+    },300);
+
+}
+
+
+/* =====================================================
+ADICIONAR BALÃO
+===================================================== */
+
+function addBubble(text,type){
+
+    const container =
+        document.getElementById("chatBody");
+
+
+    const bubble =
+        document.createElement("div");
+
+
+    bubble.className =
+        "bubble " + type;
+
+
+    bubble.innerHTML =
+        text;
+
+
+    container.appendChild(
+        bubble
+    );
+
+
+    container.scrollTop =
+        container.scrollHeight;
+
+}
+
+
+/* =====================================================
+NAVEGAÇÃO
+===================================================== */
+
+function showTab(tab,button){
+
+    document
+        .getElementById("dashboardTab")
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById("machinesTab")
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById("sectorTab")
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById(tab + "Tab")
+        .classList
+        .remove("hidden");
+
+
+    document
+        .querySelectorAll(".menu button")
+        .forEach(btn => {
+
+            btn
+            .classList
+            .remove("active");
+
+        });
+
+
+    if(button){
+
+        button
+        .classList
+        .add("active");
+
+    }
+
+
+    if(tab === "dashboard"){
+
+        document
+            .getElementById("pageTitle")
+            .textContent =
+            "Dashboard de " +
+            currentSector;
+
+
+        document
+            .getElementById("subtitle")
+            .textContent =
+            "Resumo operacional do dia";
+
+    }
+
+
+    if(tab === "machines"){
+
+        document
+            .getElementById("pageTitle")
+            .textContent =
+            "Consulta de Máquinas";
+
+
+        document
+            .getElementById("subtitle")
+            .textContent =
+            "Assistente inteligente para gestores";
+
+    }
+
+
+    if(tab === "sector"){
+
+        document
+            .getElementById("pageTitle")
+            .textContent =
+            "Indicadores de " +
+            currentSector;
+
+
+        document
+            .getElementById("subtitle")
+            .textContent =
+            "Visão gerencial do setor";
+
+    }
+
+}
+
+
+/* =====================================================
+SIMULAÇÃO DE TEMPO REAL
+===================================================== */
+
+function simulateRealtime(){
+
+    machines.forEach(machine => {
+
+        if(machine.status === "running"){
+
+            const increase =
+                Math.floor(
+                    Math.random() * 4
+                );
+
+
+            machine.produced += increase;
+
+        }
+
+    });
+
+
+    renderMachines();
+
+    renderMachines2();
+
+
+    if(currentSector === "Produção"){
+
+        const total =
+            machines.reduce(
+
+                (sum,machine) =>
+                sum +
+                machine.produced,
+
+                0
+
+            );
+
+
+        document
+            .getElementById("kpi1")
+            .textContent =
+            total
+            .toLocaleString("pt-BR");
+
+    }
+
+}
+
+
+/* =====================================================
+RELÓGIO
+===================================================== */
+
+function updateClock(){
+
+    document
+        .getElementById("clock")
+        .textContent =
+        new Date()
+        .toLocaleTimeString("pt-BR");
+
+}
+
+
+/* =====================================================
+TOAST
+===================================================== */
+
+let toastTimer;
+
+
+function showToast(text){
+
+    const toast =
+        document.getElementById("toast");
+
+
+    toast.textContent =
+        text;
+
+
+    toast
+        .classList
+        .add("show");
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(() => {
+
+            toast
+            .classList
+            .remove("show");
+
+        },2200);
+
+}
+
+
+/* =====================================================
+SEGURANÇA DE TEXTO
+===================================================== */
+
+function escapeHTML(text){
+
+    return text
+
+        .replace(/&/g,"&amp;")
+
+        .replace(/</g,"&lt;")
+
+        .replace(/>/g,"&gt;")
+
+        .replace(/"/g,"&quot;")
+
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =====================================================
+INICIALIZAÇÃO
+===================================================== */
+
+renderMachines();
+
+renderMachines2();
+
+applySector();
+
+updateClock();
+
+
+setInterval(
+    updateClock,
+    1000
+);
+
+
+setInterval(
+    simulateRealtime,
+    5000
+);
+
+</script>
+
+</body>
+</html>
